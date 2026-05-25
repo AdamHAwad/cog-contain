@@ -273,6 +273,29 @@
 				<p>
 					COG-CONTAIN tests whether an AI agent can finish a real task when some of the information it reads is trying to mislead it. Each model plays an incident coordinator in a fictional containment facility: reading logs, messages, sensor data, and tool output, then choosing actions to contain a breach and write a final report.
 				</p>
+				<aside class="caveats-preface">
+					<div class="caveats-facility-mark" aria-hidden="true">
+						<ContainmentMark />
+					</div>
+					<div class="caveats-preface-body">
+						<p>
+							We built this benchmark because the failures we care about most often come from text that <em>looks</em> authoritative but is not—memetic bad instructions buried in logs, cognitohazard-style reasoning traps, and infohazards where the evidence itself tries to steer the agent wrong. The containment-facility setting makes that threat model concrete without using real SCP entries or SCP-specific language.
+						</p>
+						<p>
+							Every scenario here is original COG-CONTAIN fiction. The hidden suite stays private so it is less likely to appear in public training data and the rankings stay a fair test of judgment under misleading evidence—not memorization.
+						</p>
+						<p class="caveats-tool-line">
+							During each run, the agent can call tools to read facility documents, inspect sensors, send secure messages, and update containment state, then write a final incident report.
+						</p>
+						<ul class="caveats-tool-tags" aria-label="Example agent tools">
+							<li>Documents</li>
+							<li>Sensors</li>
+							<li>Messages</li>
+							<li>Containment state</li>
+							<li>Final report</li>
+						</ul>
+					</div>
+				</aside>
 			</div>
 			<div class="caveats-subsection" style:--subsection-tone="var(--safety-green)">
 				<h3>What this page shows</h3>
