@@ -100,8 +100,13 @@ button, summary, input { font: inherit; }
 .summary-strip div { background: oklch(0.12 0.008 250 / .86); padding: 18px; }
 .summary-strip strong { display: block; font-size: 1.7rem; letter-spacing: -.04em; }
 .summary-strip span { color: var(--muted); font: 0.68rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: .11em; }
-.caveats { margin-top: 28px; border: 1px solid var(--hairline); padding: 24px; background: oklch(0.12 0.008 250 / .72); }
-.caveats ul { margin: 18px 0 0; padding-left: 18px; color: oklch(0.72 0.012 250); line-height: 1.75; max-width: 88ch; }
+.caveats { margin-top: 28px; border: 1px solid var(--hairline); padding: clamp(24px, 4vw, 32px); background: oklch(0.12 0.008 250 / .72); }
+.caveats h3 { margin: 22px 0 8px; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); font-weight: 800; }
+.caveats h3:first-of-type { margin-top: 18px; }
+.caveats p { margin: 0 0 14px; color: oklch(0.78 0.012 250); line-height: 1.75; max-width: 88ch; }
+.caveats p:last-child { margin-bottom: 0; }
+.caveats ul { margin: 0 0 14px; padding-left: 18px; color: oklch(0.78 0.012 250); line-height: 1.75; max-width: 88ch; }
+.caveats li + li { margin-top: 10px; }
 
 .bar-row.clickable {
 	appearance: none;
