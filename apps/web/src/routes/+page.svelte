@@ -70,7 +70,7 @@
 		return value;
 	}
 
-	function modelName(result: VisualizerModelResult) {
+	function modelName(result: Pick<VisualizerModelResult, 'model' | 'thinkingLevel' | 'providerThinkingEffort'>) {
 		const effort = result.providerThinkingEffort ?? result.thinkingLevel;
 		return effort ? `${result.model} ${effort}` : result.model;
 	}
