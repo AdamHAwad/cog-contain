@@ -31,26 +31,28 @@
 	const chartWidth = 800;
 	const chartHeight = 500;
 	const plotLeft = MATRIX_CHART_MARGIN.left + 36;
-	const plotRight = chartWidth - MATRIX_CHART_MARGIN.right;
 	const plotTop = MATRIX_CHART_MARGIN.top;
 	const plotBottom = chartHeight - MATRIX_CHART_MARGIN.bottom;
-	const plotWidth = plotRight - plotLeft;
-	const plotHeight = plotBottom - plotTop;
+	const scoreTicks = [0, 25, 50, 75, 100];
+
+	let hoveredRowId = $state<string | undefined>(undefined);
+	let isMobile = $state(false);
+	let tooltipPos = $state({ x: 0, y: 0 });
+
+	const plotRight = $derived(chartWidth - (isMobile ? 20 : MATRIX_CHART_MARGIN.right));
+	const plotWidth = $derived(plotRight - plotLeft);
+	const plotHeight = $derived(plotBottom - plotTop);
+	const showPointLabels = $derived(!isMobile);
 
 	const performanceData = $derived(
 		buildPerformanceData(results, leaderboardMode, (row) => formatFullModelLabel(displayInput(row)))
 	);
 
-	const scoreTicks = [0, 25, 50, 75, 100];
-
-	let hoveredRowId = $state<string | undefined>(undefined);
-	let showPointLabels = $state(true);
-
 	$effect(() => {
 		if (typeof window === 'undefined') return;
 		const mq = window.matchMedia('(max-width: 820px)');
 		const sync = () => {
-			showPointLabels = !mq.matches;
+			isMobile = mq.matches;
 		};
 		sync();
 		mq.addEventListener('change', sync);
@@ -70,6 +72,21 @@
 	}
 
 	const hoveredDatum = $derived(performanceData.find((d) => d.rowId === hoveredRowId));
+
+	function updateTooltipPosition(event: PointerEvent) {
+		const svg = (event.currentTarget as SVGElement).ownerSVGElement;
+		if (!svg) return;
+		const rect = svg.getBoundingClientRect();
+		tooltipPos = {
+			x: Math.min(Math.max(event.clientX - rect.left + 14, 12), rect.width - 220),
+			y: Math.min(Math.max(event.clientY - rect.top - 12, 12), rect.height - 120)
+		};
+	}
+
+	function handlePointPointer(datum: PerformanceDatum, event: PointerEvent) {
+		hoveredRowId = datum.rowId;
+		updateTooltipPosition(event);
+	}
 
 	function handlePointClick(datum: PerformanceDatum) {
 		onPointClick?.(datum.rowId);
@@ -100,9 +117,6 @@
 					<text x={x} y={plotBottom + 18} class="value-matrix-tick">${tick}</text>
 				{/each}
 
-				<line x1={plotLeft} y1={plotTop} x2={plotLeft} y2={plotBottom} class="value-matrix-axis" />
-				<line x1={plotLeft} y1={plotBottom} x2={plotRight} y2={plotBottom} class="value-matrix-axis" />
-
 				<text x={(plotLeft + plotRight) / 2} y={chartHeight - 8} class="value-matrix-axis-label">
 					TOTAL COST ($) LOG SCALE
 				</text>
@@ -131,7 +145,9 @@
 						transform="translate({p.x}, {p.y})"
 						role="button"
 						tabindex="0"
-						onpointerenter={() => (hoveredRowId = datum.rowId)}
+						onpointerenter={(event) => handlePointPointer(datum, event)}
+						onpointermove={(event) => handlePointPointer(datum, event)}
+						onfocus={() => (hoveredRowId = datum.rowId)}
 						onclick={() => handlePointClick(datum)}
 						onkeydown={(event) => {
 							if (event.key === 'Enter' || event.key === ' ') {
@@ -140,6 +156,7 @@
 							}
 						}}
 					>
+						<circle r="18" class="value-matrix-hit-area" />
 						{#if logo}
 							<image
 								href={logo}
@@ -160,7 +177,7 @@
 			</svg>
 
 			{#if hoveredDatum}
-				<div class="value-matrix-tooltip" role="tooltip">
+				<div class="value-matrix-tooltip" role="tooltip" style:left="{tooltipPos.x}px" style:top="{tooltipPos.y}px">
 					<p class="value-matrix-tooltip-title">{hoveredDatum.model}</p>
 					<div class="value-matrix-tooltip-body">
 						<p>{scoreMetricLabel(leaderboardMode)}: {hoveredDatum.successRate.toFixed(1)}%</p>
