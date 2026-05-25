@@ -123,8 +123,9 @@ button, summary, input { font: inherit; }
 }
 .caveats-subsection p { margin: 0; color: oklch(0.78 0.012 250); line-height: 1.75; max-width: 88ch; }
 .agent-env-subsection p { margin-bottom: 14px; }
-.agent-env-diagram { margin: 4px 0 0; padding: 0; }
-.agent-env-diagram svg { display: block; width: 100%; max-width: 560px; height: auto; }
+.agent-env-subsection { overflow: visible; }
+.agent-env-diagram { margin: 4px 0 6px; padding: 0 0 4px; overflow: visible; }
+.agent-env-diagram svg { display: block; width: 100%; max-width: 560px; height: auto; overflow: visible; }
 .agent-env-link {
 	fill: none;
 	stroke-width: 1.2;
