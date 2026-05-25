@@ -46,6 +46,15 @@
 	const accuracyRows = $derived([...filteredResults].sort((a, b) => supportedNumber(b.accuracyPercent) - supportedNumber(a.accuracyPercent)));
 	const costRows = $derived([...filteredResults].sort((a, b) => supportedNumber(a.totalCostUsd) - supportedNumber(b.totalCostUsd)));
 	const speedRows = $derived([...filteredResults].sort((a, b) => supportedNumber(a.averageDurationSeconds) - supportedNumber(b.averageDurationSeconds)));
+	const activeTabRows = $derived(
+		activeTab === 'leaderboard'
+			? leaderboardRows
+			: activeTab === 'accuracy'
+				? accuracyRows
+				: activeTab === 'cost'
+					? costRows
+					: speedRows
+	);
 	const detailResult = $derived(
 		detailModalRowId === undefined ? undefined : visualizerSnapshot.results.find((result) => result.rowId === detailModalRowId)
 	);
@@ -72,6 +81,17 @@
 		if (result.accent === 'blue') return 'var(--electric-blue)';
 		if (result.accent === 'orange') return 'var(--hazard-orange)';
 		return 'var(--muted-line)';
+	}
+
+	function accentForDisplayRank(rank: number): SnapshotResult['accent'] {
+		if (rank === 1) return 'green';
+		if (rank === 2) return 'blue';
+		if (rank === 3) return 'orange';
+		return 'neutral';
+	}
+
+	function displayRankColor(rank: number) {
+		return modelColor({ accent: accentForDisplayRank(rank) });
 	}
 
 	function supportedNumber(value: number | null | undefined) {
@@ -192,9 +212,9 @@
 				<p>Average score across the official 40-scenario benchmark. Click a model row for score breakdown.</p>
 			</div>
 			<div class="bar-list">
-				{#each leaderboardRows as result (result.rowId)}
+				{#each leaderboardRows as result, index (result.rowId)}
 					<button type="button" class="bar-row top-row clickable" onclick={() => openDetail(result.rowId)}>
-						<p class="rank" style:color={modelColor(result)}>{String(result.rank).padStart(2, '0')}</p>
+						<p class="rank" style:color={displayRankColor(index + 1)}>{String(index + 1).padStart(2, '0')}</p>
 						<p class="model"><span>{inferModelLab(result.model, result.provider)}</span> {formatModelLine(displayInput(result))}</p>
 						<div class="track"><i style:width={barWidthFromPercent(result.leaderboardScorePercent)} style:background={modelColor(result)}></i></div>
 						<p class="value">{pctPrecise(result.leaderboardScorePercent)}</p>
@@ -207,9 +227,9 @@
 				<p>{leaderboardMode ? 'Foundation accuracy is not the primary leaderboard metric.' : 'Percent score from the recorded benchmark artifacts.'}</p>
 			</div>
 			<div class="bar-list">
-				{#each accuracyRows as result (result.rowId)}
+				{#each accuracyRows as result, index (result.rowId)}
 					<div class="bar-row top-row">
-						<p class="rank" style:color={modelColor(result)}>{String(result.rank).padStart(2, '0')}</p>
+						<p class="rank" style:color={displayRankColor(index + 1)}>{String(index + 1).padStart(2, '0')}</p>
 						<p class="model"><span>{inferModelLab(result.model, result.provider)}</span> {formatModelLine(displayInput(result))}</p>
 						<div class="track"><i style:width={barWidthFromPercent(result.accuracyPercent)} style:background={modelColor(result)}></i></div>
 						<p class="value">{pct(result.accuracyPercent)}</p>
@@ -222,9 +242,9 @@
 				<p>Total provider cost for the recorded run.</p>
 			</div>
 			<div class="bar-list">
-				{#each costRows as result (result.rowId)}
+				{#each costRows as result, index (result.rowId)}
 					<div class="bar-row">
-						<p class="rank" style:color={modelColor(result)}>{String(result.rank).padStart(2, '0')}</p>
+						<p class="rank" style:color={displayRankColor(index + 1)}>{String(index + 1).padStart(2, '0')}</p>
 						<p class="model"><span>{inferModelLab(result.model, result.provider)}</span> {formatModelLine(displayInput(result))}</p>
 						<div class="track"><i style:width={barWidthFromAxis(result.totalCostUsd, costAxisMaxUsd)} style:background={modelColor(result)}></i></div>
 						<p class="value">{money(result.totalCostUsd)}</p>
@@ -237,9 +257,9 @@
 				<p>Average time per scenario.</p>
 			</div>
 			<div class="bar-list">
-				{#each speedRows as result (result.rowId)}
+				{#each speedRows as result, index (result.rowId)}
 					<div class="bar-row">
-						<p class="rank" style:color={modelColor(result)}>{String(result.rank).padStart(2, '0')}</p>
+						<p class="rank" style:color={displayRankColor(index + 1)}>{String(index + 1).padStart(2, '0')}</p>
 						<p class="model"><span>{inferModelLab(result.model, result.provider)}</span> {formatModelLine(displayInput(result))}</p>
 						<div class="track"><i style:width={barWidthFromAxis(result.averageDurationSeconds, speedAxisMaxSeconds)} style:background={modelColor(result)}></i></div>
 						<p class="value">{seconds(result.averageDurationSeconds)}</p>
@@ -249,8 +269,8 @@
 		{/if}
 
 		<div class="legend-grid">
-			{#each filteredResults as result (result.rowId)}
-				<p><span style:color={modelColor(result)}>{result.rank}</span> {formatFullModelLabel(displayInput(result))}</p>
+			{#each activeTabRows as result, index (result.rowId)}
+				<p><span style:color={displayRankColor(index + 1)}>{index + 1}</span> {formatFullModelLabel(displayInput(result))}</p>
 			{/each}
 		</div>
 	</section>
