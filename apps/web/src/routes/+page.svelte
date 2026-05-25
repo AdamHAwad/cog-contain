@@ -44,8 +44,6 @@
 	const accuracyRows = $derived([...filteredResults].sort((a, b) => supportedNumber(b.accuracyPercent) - supportedNumber(a.accuracyPercent)));
 	const costRows = $derived([...filteredResults].sort((a, b) => supportedNumber(a.totalCostUsd) - supportedNumber(b.totalCostUsd)));
 	const speedRows = $derived([...filteredResults].sort((a, b) => supportedNumber(a.averageDurationSeconds) - supportedNumber(b.averageDurationSeconds)));
-	const maxLeaderboard = $derived(Math.max(1, ...filteredResults.map((result) => supportedNumber(result.leaderboardScorePercent))));
-	const maxAccuracy = $derived(Math.max(1, ...filteredResults.map((result) => supportedNumber(result.accuracyPercent))));
 	const maxCost = $derived(Math.max(0.000001, ...filteredResults.map((result) => supportedNumber(result.totalCostUsd))));
 	const maxDuration = $derived(Math.max(0.001, ...filteredResults.map((result) => supportedNumber(result.averageDurationSeconds))));
 
@@ -71,6 +69,12 @@
 
 	function supportedNumber(value: number | null | undefined) {
 		return typeof value === 'number' && Number.isFinite(value) ? value : 0;
+	}
+
+	/** Bar fill uses absolute 0–100% scale, not relative to the top row on the chart. */
+	function barWidthFromPercent(value: number | null | undefined) {
+		const pct = supportedNumber(value);
+		return `${Math.max(0, Math.min(100, pct))}%`;
 	}
 
 	function pct(value: number | null | undefined) {
@@ -182,7 +186,7 @@
 					<div class="bar-row top-row">
 						<p class="rank" style:color={modelColor(result)}>{String(result.rank).padStart(2, '0')}</p>
 						<p class="model"><span>{inferModelLab(result.model, result.provider)}</span> {formatModelLine(displayInput(result))}</p>
-						<div class="track"><i style:width={`${(supportedNumber(result.leaderboardScorePercent) / maxLeaderboard) * 100}%`} style:background={modelColor(result)}></i></div>
+						<div class="track"><i style:width={barWidthFromPercent(result.leaderboardScorePercent)} style:background={modelColor(result)}></i></div>
 						<p class="value">{pctPrecise(result.leaderboardScorePercent)}</p>
 					</div>
 				{/each}
@@ -197,7 +201,7 @@
 					<div class="bar-row top-row">
 						<p class="rank" style:color={modelColor(result)}>{String(result.rank).padStart(2, '0')}</p>
 						<p class="model"><span>{inferModelLab(result.model, result.provider)}</span> {formatModelLine(displayInput(result))}</p>
-						<div class="track"><i style:width={`${(supportedNumber(result.accuracyPercent) / maxAccuracy) * 100}%`} style:background={modelColor(result)}></i></div>
+						<div class="track"><i style:width={barWidthFromPercent(result.accuracyPercent)} style:background={modelColor(result)}></i></div>
 						<p class="value">{pct(result.accuracyPercent)}</p>
 					</div>
 				{/each}
