@@ -38,7 +38,6 @@
 	const defaultSelectedRows = $derived(visualizerSnapshot.results.slice(0, 6).map((result) => result.rowId));
 	const selectedRows = $derived(selectedRowsOverride ?? defaultSelectedRows);
 
-	const repeatCount = 0;
 	const activeTone = $derived(tabs.find((tab) => tab.id === activeTab)?.tone ?? 'var(--hazard-orange)');
 	const filteredResults = $derived(visualizerSnapshot.results.filter((result) => selectedRows.includes(result.rowId)));
 	const leaderboardRows = $derived(
@@ -259,13 +258,6 @@
 	{#if detailResult}
 		<ModelDetailModal result={detailResult} displayInput={displayInput(detailResult)} onclose={closeDetail} />
 	{/if}
-
-	<section class="summary-strip" aria-label="Benchmark summary">
-		<div><strong>{visualizerSnapshot.metadata.scenarioCount}</strong><span>scenarios</span></div>
-		<div><strong>{repeatCount}</strong><span>repeats</span></div>
-		<div><strong>{visualizerSnapshot.metadata.modelCount}</strong><span>models</span></div>
-		<div><strong>{leaderboardMode ? 'Leaderboard' : 'Official'}</strong><span>results</span></div>
-	</section>
 
 	<section class="caveats">
 		<h2>About these results</h2>

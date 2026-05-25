@@ -53,7 +53,6 @@ if (!route.includes('Percent score from the recorded benchmark artifacts')) thro
 for (const term of bannedFrontFacing) if (route.includes(term)) throw new Error(`banned front-facing term in route: ${term}`);
 if (!route.includes('Total provider cost for the recorded run')) throw new Error('Cost tab must use plain source copy');
 if (!route.includes('Average time per scenario')) throw new Error('Speed tab must use plain source copy');
-if (!route.includes('<strong>{repeatCount}</strong><span>repeats</span>')) throw new Error('summary must report zero repeats');
 if (visualizerSnapshot.metadata.modelCount !== providerModelCount) throw new Error('metadata model count must match visible provider/model rows');
 if (visualizerData.includes('T450 PUBLIC RESULT SYNC') || route.includes('T450 PUBLIC RESULT SYNC')) throw new Error('stale T450 public-result sync label found');
 if (!visualizerData.includes('buildVisualizerSnapshot')) throw new Error('visualizer must build from fetched/static result JSON');

@@ -35,7 +35,7 @@ button, summary, input { font: inherit; }
 .noise { position: fixed; inset: 0; pointer-events: none; opacity: 0.16; background-image: radial-gradient(oklch(0.9 0.01 250 / 0.09) 0.7px, transparent 0.7px); background-size: 3px 3px; mix-blend-mode: overlay; }
 .grid-backdrop { position: fixed; inset: 0; pointer-events: none; background-image: linear-gradient(to right, oklch(0.95 0.006 240 / 0.045) 1px, transparent 1px), linear-gradient(to bottom, oklch(0.95 0.006 240 / 0.045) 1px, transparent 1px); background-size: 40px 40px; mask-image: linear-gradient(180deg, black, transparent 92%); }
 
-.bench-header, .chart-card, .summary-strip, .caveats { position: relative; z-index: 1; width: min(100%, 1220px); margin-inline: auto; }
+.bench-header, .chart-card, .caveats { position: relative; z-index: 1; width: min(100%, 1220px); margin-inline: auto; }
 .control-row { position: relative; z-index: 20; width: min(100%, 1220px); margin-inline: auto; display: flex; align-items: center; justify-content: flex-end; gap: 28px; padding: 28px 12px; }
 .bench-header { display: flex; align-items: end; justify-content: space-between; gap: 32px; padding: 0 0 28px; border-bottom: 1px solid var(--hairline); }
 .brand-lockup { display: flex; align-items: center; gap: 20px; }
@@ -96,10 +96,6 @@ button, summary, input { font: inherit; }
 .axis.y { left: -20px; top: 50%; transform: translate(-50%, -50%) rotate(-90deg); }
 .axis.x { bottom: -36px; left: 50%; transform: translateX(-50%); }
 
-.summary-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-top: 28px; border: 1px solid var(--hairline); background: var(--hairline); }
-.summary-strip div { background: oklch(0.12 0.008 250 / .86); padding: 18px; }
-.summary-strip strong { display: block; font-size: 1.7rem; letter-spacing: -.04em; }
-.summary-strip span { color: var(--muted); font: 0.68rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: .11em; }
 .caveats { margin-top: 28px; border: 1px solid var(--hairline); padding: clamp(24px, 4vw, 32px); background: oklch(0.12 0.008 250 / .72); }
 .caveats-intro { margin-bottom: 6px; }
 .caveats-intro > p { margin: 0 0 14px; color: oklch(0.78 0.012 250); line-height: 1.75; max-width: 88ch; }
@@ -425,7 +421,7 @@ button, summary, input { font: inherit; }
 	.tabs button { text-align: left; }
 	.bar-row { grid-template-columns: 34px 1fr 58px; gap: 10px; padding: 10px 8px; }
 	.bar-row .track { grid-column: 2 / 4; }
-	.legend-grid, .summary-strip { grid-template-columns: 1fr; }
+	.legend-grid { grid-template-columns: 1fr; }
 	.model span { min-width: auto; display: block; margin: 0 0 3px; }
 }
 
