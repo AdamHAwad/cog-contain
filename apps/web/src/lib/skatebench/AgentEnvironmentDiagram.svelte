@@ -26,11 +26,11 @@
 			<p class="agent-env-agent-label">Incident agent</p>
 		</div>
 
-		<svg class="agent-env-links" viewBox="0 0 500 20" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+		<svg class="agent-env-links" viewBox="0 0 500 44" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
 			{#each links as link (link.linkX)}
 				<path
 					class="agent-env-link"
-					d="M {agentX} 1 C {agentX} 7, {link.linkX} 7, {link.linkX} 19"
+					d="M {agentX} 2 C {agentX} 18, {link.linkX} 18, {link.linkX} 42"
 					stroke={link.tone}
 				/>
 			{/each}
