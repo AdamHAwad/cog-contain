@@ -269,30 +269,49 @@
 	<section class="caveats">
 		<h2>About these results</h2>
 		{#if leaderboardMode}
-			<p>
-				COG-CONTAIN tests whether an AI agent can finish a real task when some of the information it reads is trying to mislead it. Each model plays an incident coordinator in a fictional containment facility: reading logs, messages, sensor data, and tool output, then choosing actions to contain a breach and write a final report.
-			</p>
-			<h3>What this page shows</h3>
-			<p>
-				These are official leaderboard results from a hidden scenario suite. Every model listed here ran the same {visualizerSnapshot.metadata.scenarioCount} private scenarios under the same rules, so the rankings are directly comparable. The chart above is sorted by <strong>Leaderboard score</strong>—the average result across those scenarios.
-			</p>
-			<h3>How to read the metrics</h3>
-			<ul>
-				<li><strong>Leaderboard score</strong> — Overall quality on the hidden suite: did the agent complete objectives, avoid harm, use tools safely, follow evidence, and finish with a useful report? Click any model row for a component breakdown.</li>
-				<li><strong>Cost</strong> — Total provider spend for the full run, when cost data is available.</li>
-				<li><strong>Speed</strong> — Average time per scenario, when timing data is available.</li>
-			</ul>
-			<h3>Hidden scenarios and local examples</h3>
-			<p>
-				The official benchmark scenarios are not published here. Keeping them private protects benchmark integrity so models cannot train directly on the test set. Example scenarios are available in the repository for local development only—they show the format and let you run short local tests, but they are not part of the official hidden scenario suite and should not be treated as official scores.
-			</p>
+			<div class="caveats-intro">
+				<p>
+					COG-CONTAIN tests whether an AI agent can finish a real task when some of the information it reads is trying to mislead it. Each model plays an incident coordinator in a fictional containment facility: reading logs, messages, sensor data, and tool output, then choosing actions to contain a breach and write a final report.
+				</p>
+			</div>
+			<div class="caveats-subsection" style:--subsection-tone="var(--safety-green)">
+				<h3>What this page shows</h3>
+				<p>
+					These are official leaderboard results from a hidden scenario suite. Every model listed here ran the same {visualizerSnapshot.metadata.scenarioCount} private scenarios under the same rules, so the rankings are directly comparable. The chart above is sorted by <strong class="tone-label">Leaderboard score</strong>—the average result across those scenarios.
+				</p>
+			</div>
+			<div class="caveats-subsection" style:--subsection-tone="var(--electric-blue)">
+				<h3>How to read the metrics</h3>
+				<ul class="caveats-metrics">
+					<li style:--metric-tone="var(--safety-green)">
+						<span class="metric-tag">Leaderboard score</span>
+						Overall quality on the hidden suite: did the agent complete objectives, avoid harm, use tools safely, follow evidence, and finish with a useful report? Click any model row for a component breakdown.
+					</li>
+					<li style:--metric-tone="var(--electric-blue)">
+						<span class="metric-tag">Cost</span>
+						Total provider spend for the full run, when cost data is available.
+					</li>
+					<li style:--metric-tone="var(--latency-purple)">
+						<span class="metric-tag">Speed</span>
+						Average time per scenario, when timing data is available.
+					</li>
+				</ul>
+			</div>
+			<div class="caveats-subsection" style:--subsection-tone="var(--latency-purple)">
+				<h3>Hidden scenarios and local examples</h3>
+				<p>
+					The official benchmark scenarios are not published here. Keeping them private protects benchmark integrity so models cannot train directly on the test set. Example scenarios are available in the repository for local development only—they show the format and let you run short local tests, but they are not part of the official hidden scenario suite and should not be treated as official scores.
+				</p>
+			</div>
 		{:else}
-			<p>
-				COG-CONTAIN tests whether an AI agent can finish a task when some of the information it reads is trying to mislead it. These are official foundation benchmark results from the hidden scenario suite. The displayed accuracy reflects the prior one-tool foundation protocol and is not a leaderboard-grade score.
-			</p>
-			<p>Example scenarios are available in the repository for local development only.</p>
+			<div class="caveats-intro">
+				<p>
+					COG-CONTAIN tests whether an AI agent can finish a task when some of the information it reads is trying to mislead it. These are official foundation benchmark results from the hidden scenario suite. The displayed accuracy reflects the prior one-tool foundation protocol and is not a leaderboard-grade score.
+				</p>
+				<p>Example scenarios are available in the repository for local development only.</p>
+			</div>
 		{/if}
-		<p>
+		<p class="caveats-footer">
 			All scenario content is original COG-CONTAIN fiction inspired by containment-style settings. No real SCP entries, names, item numbers, object classes, logos, or SCP-specific language are used.
 		</p>
 	</section>
