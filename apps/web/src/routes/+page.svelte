@@ -276,20 +276,11 @@
 				<h2>Value matrix</h2>
 				<p>
 					{leaderboardMode
-						? 'Top-left is strong: high leaderboard score, low total cost. X axis uses a log scale so cheap and expensive runs stay readable.'
-						: 'Top-left is strong: high accuracy, low total cost. X axis uses a log scale so cheap and expensive runs stay readable.'}
+						? 'Top-left is elite: high leaderboard score, low total cost.'
+						: 'Top-left is elite: high accuracy, low total cost.'}
 				</p>
 			</div>
-			<ValueMatrix
-				results={filteredResults}
-				{leaderboardMode}
-				{displayInput}
-				onPointClick={openDetail}
-				{pctPrecise}
-				{pct}
-				{seconds}
-				{displayRankColor}
-			/>
+			<ValueMatrix results={filteredResults} {leaderboardMode} {displayInput} onPointClick={openDetail} />
 		{/if}
 
 		{#if activeTab !== 'matrix'}

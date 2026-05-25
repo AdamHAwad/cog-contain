@@ -91,84 +91,53 @@ button, summary, input { font: inherit; }
 
 .value-matrix { margin-top: 8px; }
 .value-matrix-empty { margin: 0; color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
-.value-matrix-plot-wrap { position: relative; max-width: 560px; margin: 0 auto; }
-.value-matrix-svg { display: block; width: 100%; height: auto; overflow: visible; }
-.value-matrix-grid-line { stroke: oklch(0.95 0.006 240 / 0.08); stroke-width: 1; }
-.value-matrix-axis-tick { fill: var(--muted); font: 600 9px/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-anchor: middle; }
-.value-matrix-axis-tick-y { text-anchor: end; }
-.value-matrix-axis-label { fill: var(--muted-line); font: 600 9px/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.12em; text-anchor: middle; }
-.value-matrix-crosshair { stroke: oklch(0.95 0.006 240 / 0.22); stroke-width: 1; stroke-dasharray: 4 4; pointer-events: none; }
-.value-matrix-point { cursor: pointer; outline: none; transition: opacity 160ms ease, transform 160ms ease; }
-.value-matrix-point-halo { fill: oklch(0.12 0.008 250 / 0.55); stroke: var(--hairline); stroke-width: 1; opacity: 0; transition: opacity 160ms ease; }
-.value-matrix-point:hover .value-matrix-point-halo,
-.value-matrix-point:focus-visible .value-matrix-point-halo,
-.value-matrix-point.is-active .value-matrix-point-halo { opacity: 1; }
-.value-matrix-point-logo { pointer-events: none; transition: opacity 160ms ease, transform 160ms ease; }
-.value-matrix-point:hover .value-matrix-point-logo,
-.value-matrix-point.is-active .value-matrix-point-logo { opacity: 1; transform: scale(1.06); }
-.value-matrix-point-fallback { fill: oklch(0.11 0.008 250 / 0.92); stroke: var(--hairline); stroke-width: 1; }
-.value-matrix-point-initial { fill: var(--muted); font: 700 8px/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-anchor: middle; pointer-events: none; }
-.value-matrix-point-rank { fill: var(--muted); font: 800 9px/1 ui-monospace, SFMono-Regular, Menlo, monospace; pointer-events: none; opacity: 0.85; }
+.value-matrix-chart { position: relative; width: 100%; }
+.value-matrix-svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.value-matrix-grid { stroke: oklch(0.95 0.006 240 / 0.03); stroke-width: 1; }
+.value-matrix-axis { stroke: var(--hairline); stroke-width: 1; }
+.value-matrix-tick { fill: var(--muted); font: 600 10px/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-anchor: middle; }
+.value-matrix-axis-label { fill: var(--muted-line); font: 600 10px/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.14em; text-anchor: middle; }
+.value-matrix-crosshair { stroke: oklch(0.95 0.006 240 / 0.1); stroke-width: 1; stroke-dasharray: 3 3; pointer-events: none; }
+.value-matrix-point { cursor: crosshair; outline: none; }
+.value-matrix-logo { opacity: 0.9; pointer-events: none; transition: opacity 300ms ease; }
+.value-matrix-point:hover .value-matrix-logo,
+.value-matrix-point.is-active .value-matrix-logo { opacity: 1; }
+.value-matrix-point-label {
+	fill: oklch(0.78 0.012 250);
+	font: 700 10px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+	text-transform: uppercase;
+	pointer-events: none;
+}
 .value-matrix-tooltip {
 	position: absolute;
+	top: 20px;
+	right: 20px;
 	z-index: 5;
-	min-width: 168px;
-	padding: 10px 12px;
+	padding: 16px;
 	border: 1px solid var(--hairline);
 	border-radius: 8px;
-	background: oklch(0.11 0.008 250 / 0.94);
+	background: oklch(0.11 0.008 250 / 0.92);
 	backdrop-filter: blur(8px);
 	pointer-events: none;
-	transition: opacity 120ms ease;
 }
-.value-matrix-tooltip-rank { margin: 0 0 4px; font: 800 0.72rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
-.value-matrix-tooltip-model { margin: 0 0 8px; color: var(--text); font-size: 0.78rem; line-height: 1.35; }
-.value-matrix-tooltip-model span { display: block; color: var(--muted); font: 600 0.62rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
-.value-matrix-tooltip dl { margin: 0; display: grid; gap: 4px; }
-.value-matrix-tooltip div { display: flex; justify-content: space-between; gap: 12px; font: 600 0.62rem/1.35 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.06em; }
-.value-matrix-tooltip dt { margin: 0; color: var(--muted); }
-.value-matrix-tooltip dd { margin: 0; color: var(--text); }
-.value-matrix-legend {
-	list-style: none;
-	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 10px 20px;
-	margin: 28px 0 0;
-	padding: 20px 0 0;
-	border-top: 1px solid var(--hairline);
+.value-matrix-tooltip-title {
+	margin: 0 0 8px;
+	color: var(--hazard-orange);
+	font-size: 0.875rem;
+	font-weight: 800;
+	letter-spacing: -0.02em;
+	text-transform: uppercase;
 }
-.value-matrix-legend li {
-	display: grid;
-	grid-template-columns: auto auto 1fr;
-	align-items: center;
-	gap: 8px;
-	min-width: 0;
+.value-matrix-tooltip-body p {
+	margin: 0;
 	color: var(--muted);
-	font: 0.72rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+	font: 600 10px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
 }
-.value-matrix-legend-rank { font-weight: 900; min-width: 1ch; }
-.value-matrix-legend-logo,
-.value-matrix-legend-fallback {
-	width: 18px;
-	height: 18px;
-	border-radius: 999px;
-	object-fit: contain;
-}
-.value-matrix-legend-fallback {
-	display: grid;
-	place-items: center;
-	border: 1px solid var(--hairline);
-	background: oklch(0.11 0.008 250 / 0.88);
-	font: 700 0.55rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
-	color: var(--muted);
-}
-.value-matrix-legend-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 @media (prefers-reduced-motion: reduce) {
-	.value-matrix-point,
-	.value-matrix-point-halo,
-	.value-matrix-point-logo,
-	.value-matrix-tooltip { transition: none; }
+	.value-matrix-logo { transition: none; }
 }
 
 .caveats { margin-top: 28px; border: 1px solid var(--hairline); padding: clamp(24px, 4vw, 32px); background: oklch(0.12 0.008 250 / .72); }
@@ -512,8 +481,6 @@ button, summary, input { font: inherit; }
 	.card-heading p { letter-spacing: .11em; }
 	.bar-row { grid-template-columns: 30px minmax(0, 1fr) auto; }
 	.value { font-size: .78rem; }
-	.value-matrix-legend { grid-template-columns: 1fr; }
-	.agent-env-tools { gap: 0 6px; }
 	.agent-env-node { width: 42px; height: 42px; }
 	.agent-env-label { font-size: 0.55rem; letter-spacing: 0.05em; max-width: 4.75rem; }
 	.agent-env-links { height: 36px; margin-top: -12px; }
