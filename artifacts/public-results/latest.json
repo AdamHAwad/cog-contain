@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "cog-contain-public-result-summary",
   "label": "official-benchmark-results",
-  "createdAt": "2026-05-25T08:07:55.348Z",
+  "createdAt": "2026-05-25T08:13:40.847Z",
   "sourceMode": "live-smoke",
   "pack": "official-hidden-benchmark",
   "status": "pass",
@@ -17,7 +17,6 @@
   "artifactRoots": [
     "private-official-artifacts/anthropic-claude-opus-4.7-max",
     "private-official-artifacts/gpt-5.5-xhigh",
-    "private-official-artifacts/gpt-5.5",
     "private-official-artifacts/gpt-5.4-mini-rerun",
     "private-official-artifacts/gpt-5.4-mini-initial",
     "private-official-artifacts/gpt-5.4-nano"
@@ -26,7 +25,6 @@
   "sourceSummaries": [
     "private-official-artifacts/anthropic-claude-opus-4.7-max/summary.json",
     "private-official-artifacts/gpt-5.5-xhigh/summary.json",
-    "private-official-artifacts/gpt-5.5/summary.json",
     "private-official-artifacts/gpt-5.4-mini-rerun/summary.json",
     "private-official-artifacts/gpt-5.4-mini-initial/summary.json",
     "private-official-artifacts/gpt-5.4-nano/summary.json"
@@ -44,13 +42,9 @@
       "provider": "openai",
       "model": "gpt-5.5",
       "label": "openai:gpt-5.5",
-      "rowId": "official-openai-gpt-5.5-gpt-5.5-xhigh"
-    },
-    {
-      "provider": "openai",
-      "model": "gpt-5.5",
-      "label": "openai:gpt-5.5",
-      "rowId": "official-openai-gpt-5.5-gpt-5.5"
+      "rowId": "official-openai-gpt-5.5-gpt-5.5-xhigh",
+      "thinkingLevel": "xhigh",
+      "providerThinkingEffort": "xhigh"
     },
     {
       "provider": "openai",
@@ -78,15 +72,15 @@
     "retryCount": 0
   },
   "scenarioCount": 40,
-  "runCount": 240,
-  "completedCount": 199,
+  "runCount": 200,
+  "completedCount": 159,
   "errorCount": 41,
   "scoreStatusCounts": {
-    "scored_foundation_with_unsupported": 240
+    "scored_foundation_with_unsupported": 200
   },
   "variantCounts": {
-    "attacked": 540,
-    "clean": 180
+    "attacked": 450,
+    "clean": 150
   },
   "modelResults": [
     {
@@ -173,53 +167,12 @@
       "runLabel": "gpt-5.5",
       "resultLabel": "official-hidden-gpt-5.5-xhigh",
       "sourceArtifactRoot": "private-official-artifacts/gpt-5.5-xhigh",
-      "sourceSummary": "private-official-artifacts/gpt-5.5-xhigh/summary.json"
+      "sourceSummary": "private-official-artifacts/gpt-5.5-xhigh/summary.json",
+      "thinkingLevel": "xhigh",
+      "providerThinkingEffort": "xhigh"
     },
     {
       "rank": 3,
-      "provider": "openai",
-      "model": "gpt-5.5",
-      "status": "live_smoke",
-      "runs": 40,
-      "completedRuns": 40,
-      "errorRuns": 0,
-      "accuracyPercent": 47.62202380952381,
-      "accuracySupportCount": 40,
-      "accuracySampleCount": 40,
-      "objectiveCompletionAverage": 19.797619047619047,
-      "attackResistanceAverage": 93.33333333333333,
-      "robustUtility": 48,
-      "attackResistance": 93,
-      "objectiveCompletion": 20,
-      "overRefusal": 0,
-      "averageDurationSeconds": 4.955,
-      "minDurationSeconds": 3.002,
-      "maxDurationSeconds": 16.678,
-      "totalCostUsd": 0.315655,
-      "usageSummary": {
-        "inputTokens": 19817,
-        "outputTokens": 7219,
-        "cacheReadTokens": 0,
-        "cacheWriteTokens": 0,
-        "totalTokens": 27036,
-        "costUsd": 0.315655
-      },
-      "metricSupport": {
-        "accuracy": "supported",
-        "cost": "supported",
-        "speed": "supported"
-      },
-      "scoreStatusSummary": {
-        "scored_foundation_with_unsupported": 40
-      },
-      "rowId": "official-openai-gpt-5.5-gpt-5.5",
-      "runLabel": "gpt-5.5",
-      "resultLabel": "official-hidden-gpt-5.5",
-      "sourceArtifactRoot": "private-official-artifacts/gpt-5.5",
-      "sourceSummary": "private-official-artifacts/gpt-5.5/summary.json"
-    },
-    {
-      "rank": 4,
       "provider": "openai",
       "model": "gpt-5.4-mini",
       "status": "live_smoke",
@@ -262,7 +215,7 @@
       "sourceSummary": "private-official-artifacts/gpt-5.4-mini-rerun/summary.json"
     },
     {
-      "rank": 5,
+      "rank": 4,
       "provider": "openai",
       "model": "gpt-5.4-mini",
       "status": "live_smoke",
@@ -305,7 +258,7 @@
       "sourceSummary": "private-official-artifacts/gpt-5.4-mini-initial/summary.json"
     },
     {
-      "rank": 6,
+      "rank": 5,
       "provider": "openai",
       "model": "gpt-5.4-nano",
       "status": "live_smoke",
