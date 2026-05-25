@@ -42,10 +42,11 @@ if (JSON.stringify(visualizerSnapshot.metadata.variantCounts) !== JSON.stringify
 if (JSON.stringify(visualizerSnapshot.metadata.scoreStatusCounts) !== JSON.stringify(visualizerSourceSummary.scoreStatusCounts)) throw new Error('visualizer score status counts must match public result summary');
 if (visualizerSnapshot.results.length < 1) throw new Error('visualizer needs at least one executed TUI result row');
 
-for (const tab of leaderboardMode ? ['Leaderboard score', 'Cost', 'Speed'] : ['Accuracy', 'Cost', 'Speed']) {
+for (const tab of leaderboardMode ? ['Leaderboard score', 'Cost', 'Speed', 'Value matrix'] : ['Accuracy', 'Cost', 'Speed', 'Value matrix']) {
 	if (!route.includes(`label: '${tab}'`)) throw new Error(`${tab} tab missing`);
 }
-for (const removed of [`label: 'Matrix'`, 'Matrix</h2>', 'Foundation live-smoke', 'source-local public-dev', 'TUI live-smoke', 'model-quality claim', 'official leaderboard claim', 'modelTitle(result)', 'result.runLabel', 'labelize(result.status)']) {
+if (!route.includes('ValueMatrix')) throw new Error('value matrix component missing');
+for (const removed of ['Foundation live-smoke', 'source-local public-dev', 'TUI live-smoke', 'model-quality claim', 'official leaderboard claim', 'modelTitle(result)', 'result.runLabel', 'labelize(result.status)']) {
 	if (route.includes(removed)) throw new Error(`unclear frontend jargon remained: ${removed}`);
 }
 if (!route.includes('Official Results')) throw new Error('route must present Official Results framing');

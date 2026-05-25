@@ -2,6 +2,7 @@
 	import AgentEnvironmentDiagram from '$lib/skatebench/AgentEnvironmentDiagram.svelte';
 	import ContainmentMark from '$lib/skatebench/ContainmentMark.svelte';
 	import ModelDetailModal from '$lib/skatebench/ModelDetailModal.svelte';
+	import ValueMatrix from '$lib/skatebench/ValueMatrix.svelte';
 	import {
 		formatFullModelLabel,
 		formatModelLine,
@@ -13,7 +14,7 @@
 
 	let { data } = $props();
 
-	type TabId = 'leaderboard' | 'accuracy' | 'cost' | 'speed';
+	type TabId = 'leaderboard' | 'accuracy' | 'cost' | 'speed' | 'matrix';
 
 	const visualizerSnapshot = $derived(data.visualizerSnapshot);
 	const leaderboardMode = $derived(visualizerSnapshot.metadata.leaderboardEligible === true);
@@ -22,12 +23,14 @@
 			? ([
 					{ id: 'leaderboard' as const, label: 'Leaderboard score', tone: 'var(--safety-green)' },
 					{ id: 'cost' as const, label: 'Cost', tone: 'var(--electric-blue)' },
-					{ id: 'speed' as const, label: 'Speed', tone: 'var(--latency-purple)' }
+					{ id: 'speed' as const, label: 'Speed', tone: 'var(--latency-purple)' },
+					{ id: 'matrix' as const, label: 'Value matrix', tone: 'var(--hazard-orange)' }
 				] satisfies { id: TabId; label: string; tone: string }[])
 			: ([
 					{ id: 'accuracy' as const, label: 'Accuracy', tone: 'var(--safety-green)' },
 					{ id: 'cost' as const, label: 'Cost', tone: 'var(--electric-blue)' },
-					{ id: 'speed' as const, label: 'Speed', tone: 'var(--latency-purple)' }
+					{ id: 'speed' as const, label: 'Speed', tone: 'var(--latency-purple)' },
+					{ id: 'matrix' as const, label: 'Value matrix', tone: 'var(--hazard-orange)' }
 				] satisfies { id: TabId; label: string; tone: string }[])
 	);
 
@@ -53,7 +56,9 @@
 				? accuracyRows
 				: activeTab === 'cost'
 					? costRows
-					: speedRows
+					: activeTab === 'speed'
+						? speedRows
+						: leaderboardRows
 	);
 	const detailResult = $derived(
 		detailModalRowId === undefined ? undefined : visualizerSnapshot.results.find((result) => result.rowId === detailModalRowId)
@@ -266,13 +271,34 @@
 					</div>
 				{/each}
 			</div>
+		{:else if activeTab === 'matrix'}
+			<div class="card-heading">
+				<h2>Value matrix</h2>
+				<p>
+					{leaderboardMode
+						? 'Top-left is strong: high leaderboard score, low total cost. X axis uses a log scale so cheap and expensive runs stay readable.'
+						: 'Top-left is strong: high accuracy, low total cost. X axis uses a log scale so cheap and expensive runs stay readable.'}
+				</p>
+			</div>
+			<ValueMatrix
+				results={filteredResults}
+				{leaderboardMode}
+				{displayInput}
+				onPointClick={openDetail}
+				{pctPrecise}
+				{pct}
+				{seconds}
+				{displayRankColor}
+			/>
 		{/if}
 
-		<div class="legend-grid">
-			{#each activeTabRows as result, index (result.rowId)}
-				<p><span style:color={displayRankColor(index + 1)}>{index + 1}</span> {formatFullModelLabel(displayInput(result))}</p>
-			{/each}
-		</div>
+		{#if activeTab !== 'matrix'}
+			<div class="legend-grid">
+				{#each activeTabRows as result, index (result.rowId)}
+					<p><span style:color={displayRankColor(index + 1)}>{index + 1}</span> {formatFullModelLabel(displayInput(result))}</p>
+				{/each}
+			</div>
+		{/if}
 	</section>
 
 	{#if detailResult}
