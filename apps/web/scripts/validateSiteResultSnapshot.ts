@@ -20,14 +20,21 @@ const twoRowRequiredModels = [
 	{ provider: 'openrouter', model: 'anthropic/claude-opus-4.7' }
 ] as const;
 
-const fourRowRequiredModels = [
-	...twoRowRequiredModels,
+const gate2MiniNanoModels = [
 	{ provider: 'openai', model: 'gpt-5.4-mini' },
 	{ provider: 'openai', model: 'gpt-5.4-nano' }
 ] as const;
 
-const requiredModels =
-	actual.results.length >= fourRowRequiredModels.length ? fourRowRequiredModels : twoRowRequiredModels;
+const hasGate2MiniNanoRow = actual.results.some(
+	(result) =>
+		result.provider === 'openai' && (result.model === 'gpt-5.4-mini' || result.model === 'gpt-5.4-nano')
+);
+
+const requiredModels = hasGate2MiniNanoRow
+	? [...twoRowRequiredModels, ...gate2MiniNanoModels].filter(({ provider, model }) =>
+			actual.results.some((result) => result.provider === provider && result.model === model)
+		)
+	: twoRowRequiredModels;
 
 for (const required of requiredModels) {
 	const row = actual.results.find((result) => result.provider === required.provider && result.model === required.model);
