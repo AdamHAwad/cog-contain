@@ -60,4 +60,18 @@ for (const claim of forbiddenPositiveClaims) {
 }
 for (const marker of rawMarkers) if (`${route}\n${css}`.includes(marker)) throw new Error(`raw/secret/generated marker found: ${marker}`);
 if (/sk-[A-Za-z0-9_-]{8,}/.test(`${route}\n${css}`)) throw new Error('secret-like sk token marker found');
+
+if (process.env.COG_CONTAIN_STATIC_BUILD === 'true') {
+	const builtIndexPath = new URL('../build/index.html', import.meta.url);
+	let builtIndex = '';
+	try {
+		builtIndex = await readFile(builtIndexPath, 'utf8');
+	} catch {
+		throw new Error('built public site missing apps/web/build/index.html; run build:public-site first');
+	}
+	for (const marker of ['gpt-5.5', 'claude-opus-4.7', 'xhigh']) {
+		if (!builtIndex.includes(marker)) throw new Error(`built public site missing required current-model marker: ${marker}`);
+	}
+}
+
 console.log(`skatebench visualizer validator: ok rows=${visualizerSnapshot.results.length} sourceMode=${visualizerSourceSummary.sourceMode}`);

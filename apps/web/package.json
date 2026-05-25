@@ -18,8 +18,9 @@
 		"qa:front-facing-copy": "node --experimental-strip-types scripts/validateFrontFacingCopy.ts",
 		"qa:scenario-exposure": "node --experimental-strip-types scripts/validateScenarioExposure.ts",
 		"prepare-local-site": "node --experimental-strip-types scripts/prepareLocalSite.ts",
-		"prepare-public-site": "node --experimental-strip-types scripts/preparePublicSite.ts && node --experimental-strip-types scripts/validatePublicResultSummary.ts",
-		"build:public-site": "COG_CONTAIN_STATIC_BUILD=true pnpm run prepare-public-site && COG_CONTAIN_STATIC_BUILD=true vite build"
+		"qa:site-result-snapshot": "node --experimental-strip-types scripts/validateSiteResultSnapshot.ts",
+		"prepare-public-site": "node --experimental-strip-types scripts/preparePublicSite.ts && node --experimental-strip-types scripts/validatePublicResultSummary.ts && node --experimental-strip-types scripts/validateSiteResultSnapshot.ts",
+		"build:public-site": "COG_CONTAIN_STATIC_BUILD=true pnpm run prepare-public-site && COG_CONTAIN_STATIC_BUILD=true vite build && COG_CONTAIN_STATIC_BUILD=true node --experimental-strip-types scripts/validateSkatebenchVisualizer.ts"
 	},
 	"devDependencies": {
 		"@fontsource-variable/inter": "^5.2.8",

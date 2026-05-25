@@ -58,6 +58,9 @@ if (builtIndex !== undefined) {
 	for (const snippet of requiredRoute) {
 		if (!builtIndex.includes(snippet)) throw new Error(`built public site missing required front-facing snippet: ${snippet}`);
 	}
+	for (const marker of ['gpt-5.5', 'claude-opus-4.7']) {
+		if (!builtIndex.includes(marker)) throw new Error(`built public site missing required current-model marker: ${marker}`);
+	}
 	assertNoBanned('apps/web/build/index.html', builtIndex);
 }
 

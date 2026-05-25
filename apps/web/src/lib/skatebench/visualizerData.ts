@@ -87,6 +87,26 @@ export type VisualizerModelResult = {
 	accent: 'green' | 'blue' | 'orange' | 'neutral';
 };
 
+export type PublicSiteSnapshot = {
+	metadata: {
+		modelCount: number;
+		scenarioCount: number;
+		updated: string;
+	};
+	results: Array<{
+		rowId: string;
+		rank: number;
+		model: string;
+		provider: string;
+		thinkingLevel?: string;
+		providerThinkingEffort?: string;
+		accuracyPercent: number | null;
+		totalCostUsd: number | null;
+		averageDurationSeconds: number | null;
+		accent: VisualizerModelResult['accent'];
+	}>;
+};
+
 export type VisualizerSnapshot = {
 	metadata: {
 		title: string;
@@ -210,6 +230,31 @@ function compactProviderModelResults(results: VisualizerModelResult[]): Visualiz
 		if (!byProviderModel.has(key)) byProviderModel.set(key, result);
 	}
 	return [...byProviderModel.values()].map((result, index) => ({ ...result, rank: index + 1, accent: accentForRank(index + 1) }));
+}
+
+export function buildPublicSiteSnapshot(publicResultSummary: PublicResultSummary): PublicSiteSnapshot {
+	const { visualizerSnapshot } = buildVisualizerSnapshot(publicResultSummary);
+	return {
+		metadata: {
+			modelCount: visualizerSnapshot.metadata.modelCount,
+			scenarioCount: visualizerSnapshot.metadata.scenarioCount,
+			updated: visualizerSnapshot.metadata.updated
+		},
+		results: visualizerSnapshot.results.map((result) => ({
+			rowId: result.rowId,
+			rank: result.rank,
+			model: result.model,
+			provider: result.provider,
+			...(result.thinkingLevel === undefined ? {} : { thinkingLevel: result.thinkingLevel }),
+			...(result.providerThinkingEffort === undefined
+				? {}
+				: { providerThinkingEffort: result.providerThinkingEffort }),
+			accuracyPercent: result.accuracyPercent,
+			totalCostUsd: result.totalCostUsd,
+			averageDurationSeconds: result.averageDurationSeconds,
+			accent: result.accent
+		}))
+	};
 }
 
 export function buildVisualizerSnapshot(publicResultSummary: PublicResultSummary): {
