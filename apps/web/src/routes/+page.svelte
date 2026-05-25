@@ -189,7 +189,7 @@
 		{:else if activeTab === 'leaderboard'}
 			<div class="card-heading">
 				<h2>Leaderboard score</h2>
-				<p>Versioned scenario utility mean from the official hidden-suite quality benchmark. Click a model row for score breakdown.</p>
+				<p>Average score across the official 40-scenario benchmark. Click a model row for score breakdown.</p>
 			</div>
 			<div class="bar-list">
 				{#each leaderboardRows as result (result.rowId)}
