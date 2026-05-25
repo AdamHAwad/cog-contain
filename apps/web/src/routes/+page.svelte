@@ -1,4 +1,5 @@
 <script lang="ts">
+	import AgentEnvironmentDiagram from '$lib/skatebench/AgentEnvironmentDiagram.svelte';
 	import ContainmentMark from '$lib/skatebench/ContainmentMark.svelte';
 	import ModelDetailModal from '$lib/skatebench/ModelDetailModal.svelte';
 	import {
@@ -276,9 +277,14 @@
 				<p>
 					We built it as a straightforward way to measure prompt injection resistance and usefulness under pressure—two things that matter more as agents get broader permissions in real systems. The scenarios are original fiction, often odd situations models probably were not trained on, so the rankings reflect judgment on unfamiliar tasks rather than memorization.
 				</p>
+				<p>The official benchmark stays hidden to keep comparisons fair.</p>
+			</div>
+			<div class="caveats-subsection agent-env-subsection" style:--subsection-tone="var(--hazard-orange)">
+				<h3>Agent environment</h3>
 				<p>
-					The official benchmark stays hidden to keep comparisons fair. During each run, agents can use tools to read documents, inspect sensors, send messages, update containment state, and submit a final report.
+					Each run is an agentic loop: the model reads evidence, calls facility tools, and submits a final report. The diagram below shows the tool surface every model shares.
 				</p>
+				<AgentEnvironmentDiagram />
 			</div>
 			<div class="caveats-subsection" style:--subsection-tone="var(--safety-green)">
 				<h3>What this page shows</h3>

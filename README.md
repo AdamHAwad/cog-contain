@@ -87,13 +87,14 @@ Local runs write results to a gitignored file. They do not change the official r
 
 ## Project status
 
-COG-CONTAIN is a public open-source benchmark repository. Current status:
+COG-CONTAIN is under active development in a private preview repository. Current status:
 
 - Official results and a results website are available in source.
 - Example scenarios are available for local development.
 - Hidden official scenarios are not open-sourced.
-- The live results site is published via GitHub Pages.
-- Hidden official scenarios remain private and are not included in this repository.
+- Public release and full production deployment are not finalized.
+
+This README does not claim public release approval, production readiness, or full benchmark certification.
 
 ## Repository map
 
@@ -112,17 +113,10 @@ COG-CONTAIN is a public open-source benchmark repository. Current status:
 - No real SCP content or SCP-owned branding is used.
 - Do not paste secrets, API keys, hidden scenario text, or raw provider payloads into issues or pull requests.
 
+## Acknowledgments
+
+The live results site draws on [SkateBench](https://github.com/T3-Content/skatebench) (MIT) for visualizer layout patterns. Thanks to Theo and the SkateBench team for the reference.
+
 ## License
 
 Public repository contents are released under the MIT License. Hidden official benchmark scenarios are not included in this public repo.
-
-## Publish official results
-
-Maintainers can publish a sanitized official results update from a local machine with write access to this repository:
-
-```bash
-cp /path/to/sanitized/latest.json artifacts/public-results/latest.json
-pnpm run publish:results -- "Update official results"
-```
-
-This runs public-safe validators, commits `artifacts/public-results/latest.json`, pushes to `main`, and triggers the GitHub Pages deploy workflow.

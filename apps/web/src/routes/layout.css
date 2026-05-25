@@ -122,6 +122,38 @@ button, summary, input { font: inherit; }
 	font-weight: 800;
 }
 .caveats-subsection p { margin: 0; color: oklch(0.78 0.012 250); line-height: 1.75; max-width: 88ch; }
+.agent-env-subsection p { margin-bottom: 14px; }
+.agent-env-diagram { margin: 4px 0 0; padding: 0; }
+.agent-env-diagram svg { display: block; width: 100%; max-width: 560px; height: auto; }
+.agent-env-link {
+	fill: none;
+	stroke-width: 1.2;
+	opacity: 0.45;
+	stroke-dasharray: 4 5;
+}
+.agent-env-agent-ring {
+	fill: oklch(0.11 0.008 250 / 0.88);
+	stroke: var(--hazard-orange);
+	stroke-width: 1.5;
+}
+.agent-env-agent-icon { color: var(--hazard-orange); }
+.agent-env-node {
+	fill: oklch(0.105 0.008 250 / 0.82);
+	stroke-width: 1.2;
+}
+.agent-env-label {
+	font: 600 9px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	text-anchor: middle;
+}
+.agent-env-agent-label {
+	font: 700 9px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	fill: var(--hazard-orange);
+	text-anchor: middle;
+}
 .caveats-subsection .tone-label { color: var(--subsection-tone); }
 .caveats-metrics {
 	list-style: none;

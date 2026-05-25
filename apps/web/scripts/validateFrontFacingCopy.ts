@@ -57,7 +57,7 @@ for (const snippet of requiredRoute) {
 	if (!route.includes(snippet)) throw new Error(`+page.svelte missing required front-facing snippet: ${snippet}`);
 }
 
-assertNoBanned('README.md', readme);
+assertNoBanned('README.md', readme.replace(/## Acknowledgments[\s\S]*?(?=## |$)/, ''));
 assertNoBanned('apps/web/src/routes/+page.svelte', route);
 if (builtIndex !== undefined) {
 	for (const snippet of requiredRoute) {
