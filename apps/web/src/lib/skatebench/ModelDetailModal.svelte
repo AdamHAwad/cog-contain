@@ -119,7 +119,7 @@
 				<strong>{ciLabel()}</strong>
 			</li>
 			<li>
-				<span>Unsupported checks</span>
+				<span>Unsupported</span>
 				<strong>{result.unsupportedPrimaryScoreCount ?? 0}</strong>
 			</li>
 			<li>
