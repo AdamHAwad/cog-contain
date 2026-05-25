@@ -44,8 +44,7 @@
 	},
 	"dependencies": {
 		"@cog-contain/core": "workspace:^",
-		"@tabler/icons-svelte": "^3.44.0",
-		"svelteplot": "^0.14.2"
+		"@tabler/icons-svelte": "^3.44.0"
 	},
 	"license": "MIT"
 }
