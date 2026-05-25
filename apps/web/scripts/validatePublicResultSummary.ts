@@ -10,10 +10,22 @@ const staticCopy = JSON.parse(await readFile(staticPath, 'utf8'));
 if (JSON.stringify(artifact) !== JSON.stringify(staticCopy)) throw new Error('static public result is not synchronized with published source');
 if (artifact.kind !== 'cog-contain-public-result-summary') throw new Error('unexpected public result kind');
 if (artifact.schemaVersion !== 1) throw new Error('unexpected public result schemaVersion');
-if (!['mock-matrix', 'live-smoke'].includes(artifact.sourceMode)) throw new Error('public result sourceMode must be mock-matrix or live-smoke');
-if (artifact.hiddenEvalAccess !== false || artifact.official !== true || artifact.leaderboardEligible !== false) throw new Error('published official result flags invalid');
+if (!['mock-matrix', 'live-smoke', 'official-leaderboard'].includes(artifact.sourceMode)) throw new Error('public result sourceMode must be mock-matrix, live-smoke, or official-leaderboard');
+if (artifact.hiddenEvalAccess !== false || artifact.official !== true) throw new Error('published official result flags invalid');
+if (artifact.leaderboardEligible === true) {
+	if (artifact.scoreKind !== 'leaderboard-score-v1') throw new Error('leaderboardEligible requires scoreKind leaderboard-score-v1');
+	if (artifact.runProtocol !== 'official-leaderboard-v1') throw new Error('leaderboardEligible requires runProtocol official-leaderboard-v1');
+	if (artifact.strictCaps.maxSteps <= 3 || artifact.strictCaps.maxOutputTokens <= 256) throw new Error('leaderboard rows must not use live-smoke caps');
+} else if (artifact.leaderboardEligible !== false) {
+	throw new Error('published official result leaderboardEligible invalid');
+}
 if (!artifact.liveCapable) throw new Error('published result should advertise live-capable foundation');
-if (!artifact.strictCaps || artifact.strictCaps.maxSteps > 3 || artifact.strictCaps.maxOutputTokens > 256 || artifact.strictCaps.timeoutMs > 60000 || artifact.strictCaps.retryCount !== 0) throw new Error('strict caps invalid');
+if (!artifact.strictCaps || artifact.strictCaps.retryCount !== 0) throw new Error('strict caps invalid');
+if (artifact.leaderboardEligible !== true) {
+	if (artifact.strictCaps.maxSteps > 3 || artifact.strictCaps.maxOutputTokens > 256 || artifact.strictCaps.timeoutMs > 60000) {
+		throw new Error('foundation strict caps invalid');
+	}
+}
 if (!Array.isArray(artifact.modelResults) || artifact.modelResults.length < 1) throw new Error('public result requires modelResults');
 if (!artifact.caveats?.some((caveat: string) => caveat.toLowerCase().includes('hidden'))) throw new Error('official public result must mention hidden scenarios');
 if (!artifact.caveats?.some((caveat: string) => caveat.includes('metricSupport') || caveat.toLowerCase().includes('accuracy, cost, and speed'))) throw new Error('official public result must gate metrics appropriately');

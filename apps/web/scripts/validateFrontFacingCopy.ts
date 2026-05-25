@@ -19,7 +19,6 @@ const banned = [
 	'phase-',
 	'T4',
 	'official=false',
-	'leaderboardEligible',
 	'Public vs Local',
 	'Public vs published'
 ];
@@ -43,10 +42,16 @@ const requiredReadme = [
 	'does not use real SCP entries',
 ];
 
-const requiredRoute = ['Official Results', 'Accuracy', 'Cost', 'Speed', 'hidden scenario suite', 'Example scenarios'];
+const requiredRoute = ['Cost', 'Speed', 'hidden scenario suite', 'Example scenarios'];
 
 for (const snippet of requiredReadme) {
 	if (!readme.includes(snippet)) throw new Error(`README missing required front-facing snippet: ${snippet}`);
+}
+if (!route.includes('Official Results') && !route.includes('Official Leaderboard Results')) {
+	throw new Error('+page.svelte missing required Official Results framing');
+}
+if (!route.includes('Accuracy') && !route.includes('Leaderboard score')) {
+	throw new Error('+page.svelte missing required primary metric tab');
 }
 for (const snippet of requiredRoute) {
 	if (!route.includes(snippet)) throw new Error(`+page.svelte missing required front-facing snippet: ${snippet}`);
@@ -57,6 +62,12 @@ assertNoBanned('apps/web/src/routes/+page.svelte', route);
 if (builtIndex !== undefined) {
 	for (const snippet of requiredRoute) {
 		if (!builtIndex.includes(snippet)) throw new Error(`built public site missing required front-facing snippet: ${snippet}`);
+	}
+	if (!builtIndex.includes('Official Results') && !builtIndex.includes('Official Leaderboard Results')) {
+		throw new Error('built public site missing Official Results framing');
+	}
+	if (!builtIndex.includes('Accuracy') && !builtIndex.includes('Leaderboard score')) {
+		throw new Error('built public site missing primary metric tab');
 	}
 	for (const marker of ['gpt-5.5', 'claude-opus-4.7']) {
 		if (!builtIndex.includes(marker)) throw new Error(`built public site missing required current-model marker: ${marker}`);

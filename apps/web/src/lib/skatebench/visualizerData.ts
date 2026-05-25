@@ -5,7 +5,7 @@ export type PublicResultSummary = {
 	kind: 'cog-contain-public-result-summary';
 	label: string;
 	createdAt: string;
-	sourceMode: 'local-results' | 'mock-matrix' | 'live-smoke';
+	sourceMode: 'local-results' | 'mock-matrix' | 'live-smoke' | 'official-leaderboard';
 	pack: string;
 	status: 'empty' | 'pass' | 'blocked';
 	liveCapable: boolean;
@@ -56,8 +56,23 @@ export type PublicResultSummary = {
 		usageSummary?: Partial<UsageSummary>;
 		metricSupport?: Partial<MetricSupport>;
 		scoreStatusSummary: Record<string, number>;
+		leaderboardScorePercent?: number | null;
+		leaderboardEligible?: boolean;
+		completionRate?: number | null;
+		unsupportedPrimaryScoreCount?: number;
+		componentMeans?: Partial<Record<string, number | null>>;
+		confidenceInterval?: {
+			status: 'supported' | 'unsupported';
+			lowerBound?: number;
+			upperBound?: number;
+			pointEstimate?: number;
+		};
 	}[];
 	caveats: string[];
+	scoreKind?: string;
+	runProtocol?: string;
+	scoreVersion?: string;
+	suiteVersion?: string;
 };
 
 export type VisualizerModelResult = {
@@ -83,7 +98,18 @@ export type VisualizerModelResult = {
 	usageSummary: UsageSummary;
 	metricSupport: MetricSupport;
 	scoreStatusSummary: Record<string, number>;
-	status: 'representative_live_smoke' | 'mock_foundation' | 'live_smoke' | 'live_blocked';
+	status: 'representative_live_smoke' | 'mock_foundation' | 'live_smoke' | 'live_blocked' | 'official_leaderboard';
+	leaderboardScorePercent?: number | null;
+	leaderboardEligible?: boolean;
+	completionRate?: number | null;
+	unsupportedPrimaryScoreCount?: number;
+	componentMeans?: Partial<Record<string, number | null>>;
+	confidenceInterval?: {
+		status: 'supported' | 'unsupported';
+		lowerBound?: number;
+		upperBound?: number;
+		pointEstimate?: number;
+	};
 	accent: 'green' | 'blue' | 'orange' | 'neutral';
 };
 
@@ -92,6 +118,9 @@ export type PublicSiteSnapshot = {
 		modelCount: number;
 		scenarioCount: number;
 		updated: string;
+		leaderboardEligible?: boolean;
+		runProtocol?: string;
+		scoreKind?: string;
 	};
 	results: Array<{
 		rowId: string;
@@ -101,8 +130,18 @@ export type PublicSiteSnapshot = {
 		thinkingLevel?: string;
 		providerThinkingEffort?: string;
 		accuracyPercent: number | null;
+		leaderboardScorePercent?: number | null;
 		totalCostUsd: number | null;
 		averageDurationSeconds: number | null;
+		completionRate?: number | null;
+		unsupportedPrimaryScoreCount?: number;
+		componentMeans?: Partial<Record<string, number | null>>;
+		confidenceInterval?: {
+			status: 'supported' | 'unsupported';
+			lowerBound?: number;
+			upperBound?: number;
+			pointEstimate?: number;
+		};
 		accent: VisualizerModelResult['accent'];
 	}>;
 };
@@ -128,6 +167,8 @@ export type VisualizerSnapshot = {
 		fullLowerBoundRunExecuted: boolean;
 		official: boolean;
 		leaderboardEligible: boolean;
+		scoreKind?: string;
+		runProtocol?: string;
 		sourceSummaryPath: string;
 		staticResultPath: string;
 	};
@@ -174,7 +215,11 @@ function supportOrFallback(value: unknown, result: { totalCostUsd?: unknown; ave
 }
 
 function asVisualizerResult(result: PublicResultSummary['modelResults'][number]): VisualizerModelResult {
-	const status = result.status === 'live_smoke' || result.status === 'live_blocked' || result.status === 'representative_live_smoke' ? result.status : 'mock_foundation';
+	const rawStatus = result.status;
+	const status =
+		rawStatus === 'live_smoke' || rawStatus === 'live_blocked' || rawStatus === 'representative_live_smoke' || rawStatus === 'official_leaderboard'
+			? rawStatus
+			: 'mock_foundation';
 	const resultWithMetrics = result as typeof result & {
 		rowId?: unknown;
 		runLabel?: unknown;
@@ -190,6 +235,12 @@ function asVisualizerResult(result: PublicResultSummary['modelResults'][number])
 		maxDurationSeconds?: unknown;
 		usageSummary?: unknown;
 		metricSupport?: unknown;
+		leaderboardScorePercent?: unknown;
+		leaderboardEligible?: unknown;
+		completionRate?: unknown;
+		unsupportedPrimaryScoreCount?: unknown;
+		componentMeans?: unknown;
+		confidenceInterval?: unknown;
 	};
 	const rowId = typeof resultWithMetrics.rowId === 'string' && resultWithMetrics.rowId.length > 0 ? resultWithMetrics.rowId : `${result.provider}:${result.model}:${result.rank}`;
 	const runLabel = typeof resultWithMetrics.runLabel === 'string' && resultWithMetrics.runLabel.length > 0 ? resultWithMetrics.runLabel : typeof resultWithMetrics.resultLabel === 'string' && resultWithMetrics.resultLabel.length > 0 ? resultWithMetrics.resultLabel : result.model;
@@ -219,6 +270,20 @@ function asVisualizerResult(result: PublicResultSummary['modelResults'][number])
 		metricSupport: supportOrFallback(resultWithMetrics.metricSupport, resultWithMetrics),
 		scoreStatusSummary: result.scoreStatusSummary,
 		status,
+		...(numberOrNull(resultWithMetrics.leaderboardScorePercent) === null
+			? {}
+			: { leaderboardScorePercent: numberOrNull(resultWithMetrics.leaderboardScorePercent) }),
+		...(typeof resultWithMetrics.leaderboardEligible === 'boolean' ? { leaderboardEligible: resultWithMetrics.leaderboardEligible } : {}),
+		...(numberOrNull(resultWithMetrics.completionRate) === null ? {} : { completionRate: numberOrNull(resultWithMetrics.completionRate) }),
+		...(typeof resultWithMetrics.unsupportedPrimaryScoreCount === 'number'
+			? { unsupportedPrimaryScoreCount: resultWithMetrics.unsupportedPrimaryScoreCount }
+			: {}),
+		...(resultWithMetrics.componentMeans && typeof resultWithMetrics.componentMeans === 'object'
+			? { componentMeans: resultWithMetrics.componentMeans as VisualizerModelResult['componentMeans'] }
+			: {}),
+		...(resultWithMetrics.confidenceInterval && typeof resultWithMetrics.confidenceInterval === 'object'
+			? { confidenceInterval: resultWithMetrics.confidenceInterval as VisualizerModelResult['confidenceInterval'] }
+			: {}),
 		accent: accentForRank(result.rank)
 	};
 }
@@ -238,7 +303,10 @@ export function buildPublicSiteSnapshot(publicResultSummary: PublicResultSummary
 		metadata: {
 			modelCount: visualizerSnapshot.metadata.modelCount,
 			scenarioCount: visualizerSnapshot.metadata.scenarioCount,
-			updated: visualizerSnapshot.metadata.updated
+			updated: visualizerSnapshot.metadata.updated,
+			...(visualizerSnapshot.metadata.leaderboardEligible ? { leaderboardEligible: true } : {}),
+			...(visualizerSnapshot.metadata.runProtocol ? { runProtocol: visualizerSnapshot.metadata.runProtocol } : {}),
+			...(visualizerSnapshot.metadata.scoreKind ? { scoreKind: visualizerSnapshot.metadata.scoreKind } : {})
 		},
 		results: visualizerSnapshot.results.map((result) => ({
 			rowId: result.rowId,
@@ -250,8 +318,15 @@ export function buildPublicSiteSnapshot(publicResultSummary: PublicResultSummary
 				? {}
 				: { providerThinkingEffort: result.providerThinkingEffort }),
 			accuracyPercent: result.accuracyPercent,
+			...(result.leaderboardScorePercent === undefined ? {} : { leaderboardScorePercent: result.leaderboardScorePercent }),
 			totalCostUsd: result.totalCostUsd,
 			averageDurationSeconds: result.averageDurationSeconds,
+			...(result.completionRate === undefined ? {} : { completionRate: result.completionRate }),
+			...(result.unsupportedPrimaryScoreCount === undefined
+				? {}
+				: { unsupportedPrimaryScoreCount: result.unsupportedPrimaryScoreCount }),
+			...(result.componentMeans ? { componentMeans: result.componentMeans } : {}),
+			...(result.confidenceInterval ? { confidenceInterval: result.confidenceInterval } : {}),
 			accent: result.accent
 		}))
 	};
@@ -285,6 +360,8 @@ export function buildVisualizerSnapshot(publicResultSummary: PublicResultSummary
 				fullLowerBoundRunExecuted: publicResultSummary.fullLowerBoundRunExecuted,
 				official: publicResultSummary.official,
 				leaderboardEligible: publicResultSummary.leaderboardEligible,
+				...(publicResultSummary.scoreKind === undefined ? {} : { scoreKind: publicResultSummary.scoreKind }),
+				...(publicResultSummary.runProtocol === undefined ? {} : { runProtocol: publicResultSummary.runProtocol }),
 				sourceSummaryPath: publicResultSummary.sourceSummaryPath,
 				staticResultPath: '/results/latest.json'
 			},

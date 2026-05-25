@@ -8,6 +8,7 @@ const visualizerData = await readFile(new URL('../src/lib/skatebench/visualizerD
 const pageLoader = await readFile(new URL('../src/routes/+page.ts', import.meta.url), 'utf8');
 const staticResult = JSON.parse(await readFile(new URL('../static/results/latest.json', import.meta.url), 'utf8'));
 const { visualizerSnapshot, visualizerSourceSummary } = buildVisualizerSnapshot(staticResult);
+const leaderboardMode = visualizerSnapshot.metadata.leaderboardEligible === true;
 
 const retiredRouteMarkers = ['/admin/runs', '/reports/', '/leaderboard', 'Convex', 'Start official run', 'Publish report'];
 const forbiddenPositiveClaims = ['official leaderboard evidence', 'publication-ready', 'Phase 12 completion', 'full V1 readiness', 'model-quality evidence', 'defense-effectiveness evidence'];
@@ -17,10 +18,20 @@ const forbiddenFakeMetrics = ['$0.00', '0.0s', '0.00s', 'Utility distribution', 
 const bannedFrontFacing = ['SkateBench', 'live-smoke', 'source-local', 'public-dev', 'lower-bound', 'TUI', 'phase-', 'verifier', 'planner', 'worker', 'Public vs Local', 'not official'];
 
 if (visualizerSnapshot.metadata.official !== true) throw new Error('visualizer metadata must reflect official published results');
-if (visualizerSnapshot.metadata.dataLabel !== 'Official Results') throw new Error('visualizer data label must be Official Results');
-if (visualizerSnapshot.metadata.leaderboardEligible !== false) throw new Error('visualizer metadata must remain ranking-ineligible');
+if (visualizerSnapshot.metadata.dataLabel !== 'Official Results' && visualizerSnapshot.metadata.leaderboardEligible !== true) {
+	throw new Error('visualizer data label must be Official Results');
+}
+if (visualizerSnapshot.metadata.leaderboardEligible === true) {
+	if (visualizerSourceSummary.scoreKind !== 'leaderboard-score-v1') throw new Error('leaderboardEligible requires scoreKind leaderboard-score-v1');
+	if (!['official-leaderboard'].includes(visualizerSourceSummary.sourceMode)) throw new Error('leaderboard visualizer expects official-leaderboard sourceMode');
+	if (!route.includes('Leaderboard score')) throw new Error('leaderboard mode requires Leaderboard score tab');
+} else if (visualizerSnapshot.metadata.leaderboardEligible !== false) {
+	throw new Error('visualizer metadata leaderboardEligible invalid');
+}
 if (visualizerSnapshot.metadata.fullLowerBoundRunExecuted !== true) throw new Error('official published results should reflect full hidden-suite execution');
-if (!['mock-matrix', 'live-smoke'].includes(visualizerSourceSummary.sourceMode)) throw new Error('public visualizer validator expects published mock-matrix or live-smoke summary');
+if (!['mock-matrix', 'live-smoke', 'official-leaderboard'].includes(visualizerSourceSummary.sourceMode)) {
+	throw new Error('public visualizer validator expects published mock-matrix, live-smoke, or official-leaderboard summary');
+}
 const providerModelCount = new Set(visualizerSourceSummary.modelResults.map((result) => `${result.provider}:${result.model}`)).size;
 if (visualizerSnapshot.results.length !== providerModelCount) throw new Error('visualizer must show one row per provider/model');
 if (visualizerSnapshot.metadata.runCount !== visualizerSourceSummary.runCount) throw new Error('visualizer run count must match public result summary');
@@ -31,7 +42,9 @@ if (JSON.stringify(visualizerSnapshot.metadata.variantCounts) !== JSON.stringify
 if (JSON.stringify(visualizerSnapshot.metadata.scoreStatusCounts) !== JSON.stringify(visualizerSourceSummary.scoreStatusCounts)) throw new Error('visualizer score status counts must match public result summary');
 if (visualizerSnapshot.results.length < 1) throw new Error('visualizer needs at least one executed TUI result row');
 
-for (const tab of ['Accuracy', 'Cost', 'Speed']) if (!route.includes(`label: '${tab}'`)) throw new Error(`${tab} tab missing`);
+for (const tab of leaderboardMode ? ['Leaderboard score', 'Cost', 'Speed'] : ['Accuracy', 'Cost', 'Speed']) {
+	if (!route.includes(`label: '${tab}'`)) throw new Error(`${tab} tab missing`);
+}
 for (const removed of [`label: 'Matrix'`, 'Matrix</h2>', 'Foundation live-smoke', 'source-local public-dev', 'TUI live-smoke', 'model-quality claim', 'official leaderboard claim', 'modelTitle(result)', 'result.runLabel', 'labelize(result.status)']) {
 	if (route.includes(removed)) throw new Error(`unclear frontend jargon remained: ${removed}`);
 }

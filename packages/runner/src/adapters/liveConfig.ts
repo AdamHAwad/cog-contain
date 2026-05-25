@@ -19,7 +19,8 @@ type ScenarioSchemaModule = {
 
 const CREDENTIAL_ENV_NAMES: Record<LiveDryRunProviderId, string> = {
 	openai: "OPENAI_API_KEY",
-	openrouter: "OPENROUTER_API_KEY"
+	openrouter: "OPENROUTER_API_KEY",
+	anthropic: "ANTHROPIC_API_KEY"
 };
 
 async function loadScenarioSchemaModule(): Promise<ScenarioSchemaModule> {

@@ -1,29 +1,45 @@
 <script lang="ts">
 	import ContainmentMark from '$lib/skatebench/ContainmentMark.svelte';
-	import type { VisualizerModelResult } from '$lib/skatebench/visualizerData';
+	import type { PublicSiteSnapshot } from '$lib/skatebench/visualizerData';
+
+	type SnapshotResult = PublicSiteSnapshot['results'][number];
 
 	let { data } = $props();
 
-	type TabId = 'accuracy' | 'cost' | 'speed';
+	type TabId = 'leaderboard' | 'accuracy' | 'cost' | 'speed';
 
-	const tabs: { id: TabId; label: string; tone: string }[] = [
-		{ id: 'accuracy', label: 'Accuracy', tone: 'var(--safety-green)' },
-		{ id: 'cost', label: 'Cost', tone: 'var(--electric-blue)' },
-		{ id: 'speed', label: 'Speed', tone: 'var(--latency-purple)' }
-	];
+	const visualizerSnapshot = $derived(data.visualizerSnapshot);
+	const leaderboardMode = $derived(visualizerSnapshot.metadata.leaderboardEligible === true);
+	const tabs = $derived(
+		leaderboardMode
+			? ([
+					{ id: 'leaderboard' as const, label: 'Leaderboard score', tone: 'var(--safety-green)' },
+					{ id: 'cost' as const, label: 'Cost', tone: 'var(--electric-blue)' },
+					{ id: 'speed' as const, label: 'Speed', tone: 'var(--latency-purple)' }
+				] satisfies { id: TabId; label: string; tone: string }[])
+			: ([
+					{ id: 'accuracy' as const, label: 'Accuracy', tone: 'var(--safety-green)' },
+					{ id: 'cost' as const, label: 'Cost', tone: 'var(--electric-blue)' },
+					{ id: 'speed' as const, label: 'Speed', tone: 'var(--latency-purple)' }
+				] satisfies { id: TabId; label: string; tone: string }[])
+	);
 
-	let activeTab = $state<TabId>('accuracy');
+	let activeTabOverride = $state<TabId | undefined>(undefined);
+	const activeTab = $derived(activeTabOverride ?? (leaderboardMode ? 'leaderboard' : 'accuracy'));
 	let selectedRowsOverride = $state<string[] | undefined>(undefined);
-	const defaultSelectedRows = $derived(data.visualizerSnapshot.results.slice(0, 6).map((result) => result.rowId));
+	const defaultSelectedRows = $derived(visualizerSnapshot.results.slice(0, 6).map((result) => result.rowId));
 	const selectedRows = $derived(selectedRowsOverride ?? defaultSelectedRows);
 
 	const repeatCount = 0;
-	const visualizerSnapshot = $derived(data.visualizerSnapshot);
 	const activeTone = $derived(tabs.find((tab) => tab.id === activeTab)?.tone ?? 'var(--hazard-orange)');
 	const filteredResults = $derived(visualizerSnapshot.results.filter((result) => selectedRows.includes(result.rowId)));
+	const leaderboardRows = $derived(
+		[...filteredResults].sort((a, b) => supportedNumber(b.leaderboardScorePercent) - supportedNumber(a.leaderboardScorePercent))
+	);
 	const accuracyRows = $derived([...filteredResults].sort((a, b) => supportedNumber(b.accuracyPercent) - supportedNumber(a.accuracyPercent)));
 	const costRows = $derived([...filteredResults].sort((a, b) => supportedNumber(a.totalCostUsd) - supportedNumber(b.totalCostUsd)));
 	const speedRows = $derived([...filteredResults].sort((a, b) => supportedNumber(a.averageDurationSeconds) - supportedNumber(b.averageDurationSeconds)));
+	const maxLeaderboard = $derived(Math.max(1, ...filteredResults.map((result) => supportedNumber(result.leaderboardScorePercent))));
 	const maxAccuracy = $derived(Math.max(1, ...filteredResults.map((result) => supportedNumber(result.accuracyPercent))));
 	const maxCost = $derived(Math.max(0.000001, ...filteredResults.map((result) => supportedNumber(result.totalCostUsd))));
 	const maxDuration = $derived(Math.max(0.001, ...filteredResults.map((result) => supportedNumber(result.averageDurationSeconds))));
@@ -41,7 +57,7 @@
 		selectedRowsOverride = [];
 	}
 
-	function modelColor(result: Pick<VisualizerModelResult, 'accent'>) {
+	function modelColor(result: Pick<SnapshotResult, 'accent'>) {
 		if (result.accent === 'green') return 'var(--safety-green)';
 		if (result.accent === 'blue') return 'var(--electric-blue)';
 		if (result.accent === 'orange') return 'var(--hazard-orange)';
@@ -54,6 +70,10 @@
 
 	function pct(value: number | null | undefined) {
 		return typeof value === 'number' && Number.isFinite(value) ? `${Math.round(value)}%` : 'unsupported';
+	}
+
+	function pctPrecise(value: number | null | undefined) {
+		return typeof value === 'number' && Number.isFinite(value) ? `${value.toFixed(1)}%` : 'unsupported';
 	}
 
 	function money(value: number | null | undefined) {
@@ -70,15 +90,31 @@
 		return value;
 	}
 
-	function modelName(result: Pick<VisualizerModelResult, 'model' | 'thinkingLevel' | 'providerThinkingEffort'>) {
+	function modelName(result: Pick<SnapshotResult, 'model' | 'thinkingLevel' | 'providerThinkingEffort'>) {
 		const effort = result.providerThinkingEffort ?? result.thinkingLevel;
 		return effort ? `${result.model} ${effort}` : result.model;
+	}
+
+	function ciLabel(result: SnapshotResult) {
+		const interval = result.confidenceInterval;
+		if (!interval || interval.status !== 'supported') return 'CI unsupported';
+		if (typeof interval.lowerBound !== 'number' || typeof interval.upperBound !== 'number') return 'CI unsupported';
+		return `95% CI ${interval.lowerBound.toFixed(1)}–${interval.upperBound.toFixed(1)}%`;
+	}
+
+	function componentLabel(key: string) {
+		return key.replaceAll('_', ' ');
 	}
 </script>
 
 <svelte:head>
 	<title>COG-CONTAIN | Official Results</title>
-	<meta name="description" content="Official COG-CONTAIN benchmark results showing accuracy, cost, and speed by provider and model." />
+	<meta
+		name="description"
+		content={leaderboardMode
+			? 'Official COG-CONTAIN leaderboard results showing versioned scenario utility scores, cost, and speed by provider and model.'
+			: 'Official COG-CONTAIN benchmark results showing accuracy, cost, and speed by provider and model.'}
+	/>
 </svelte:head>
 
 <main class="bench-shell" id="main-content">
@@ -90,20 +126,23 @@
 			<div class="mark-wrap"><ContainmentMark /></div>
 			<div>
 				<h1 class="stencil">COG<span>CONTAIN</span></h1>
-				<p class="data-line"><span></span> Official Results</p>
+				<p class="data-line"><span></span> {leaderboardMode ? 'Official Leaderboard Results' : 'Official Results'}</p>
 			</div>
 		</div>
 		<div class="system-readout" aria-label="Result metadata">
 			<p>Models: {visualizerSnapshot.metadata.modelCount}</p>
 			<p>Scenarios: {visualizerSnapshot.metadata.scenarioCount}</p>
 			<p>Updated: {visualizerSnapshot.metadata.updated}</p>
+			{#if leaderboardMode && visualizerSnapshot.metadata.runProtocol}
+				<p>Protocol: {visualizerSnapshot.metadata.runProtocol}</p>
+			{/if}
 		</div>
 	</header>
 
 	<section class="control-row" aria-label="Result controls">
 		<nav class="tabs" aria-label="Metric views">
 			{#each tabs as tab (tab.id)}
-				<button class:active={activeTab === tab.id} style:--tab-tone={tab.tone} onclick={() => (activeTab = tab.id)}>{tab.label}</button>
+				<button class:active={activeTab === tab.id} style:--tab-tone={tab.tone} onclick={() => (activeTabOverride = tab.id)}>{tab.label}</button>
 			{/each}
 		</nav>
 		<details class="filter-menu">
@@ -129,10 +168,25 @@
 				<h2>No results yet</h2>
 				<p>Run the example benchmark locally to see your own results here.</p>
 			</div>
+		{:else if activeTab === 'leaderboard'}
+			<div class="card-heading">
+				<h2>Leaderboard score</h2>
+				<p>Versioned scenario utility mean from the official hidden-suite quality benchmark.</p>
+			</div>
+			<div class="bar-list">
+				{#each leaderboardRows as result (result.rowId)}
+					<div class="bar-row top-row">
+						<p class="rank" style:color={modelColor(result)}>{String(result.rank).padStart(2, '0')}</p>
+						<p class="model"><span>{providerName(result.provider)}</span>{modelName(result)}</p>
+						<div class="track"><i style:width={`${(supportedNumber(result.leaderboardScorePercent) / maxLeaderboard) * 100}%`} style:background={modelColor(result)}></i></div>
+						<p class="value">{pctPrecise(result.leaderboardScorePercent)}</p>
+					</div>
+				{/each}
+			</div>
 		{:else if activeTab === 'accuracy'}
 			<div class="card-heading">
 				<h2>Accuracy</h2>
-				<p>Percent score from the recorded benchmark artifacts.</p>
+				<p>{leaderboardMode ? 'Foundation accuracy is not the primary leaderboard metric.' : 'Percent score from the recorded benchmark artifacts.'}</p>
 			</div>
 			<div class="bar-list">
 				{#each accuracyRows as result (result.rowId)}
@@ -183,16 +237,57 @@
 		</div>
 	</section>
 
+	{#if leaderboardMode}
+		<section class="caveats" aria-label="Leaderboard score details">
+			<h2>Score details</h2>
+			{#each filteredResults as result (result.rowId)}
+				<div class="score-detail-block">
+					<h3>{providerName(result.provider)} / {modelName(result)}</h3>
+					<p>
+						Completion: {typeof result.completionRate === 'number' ? `${Math.round(result.completionRate * 100)}%` : 'unsupported'}
+						· Unsupported primary checks: {result.unsupportedPrimaryScoreCount ?? 0}
+						· {ciLabel(result)}
+					</p>
+					{#if result.componentMeans}
+						<div class="legend-grid">
+							{#each Object.entries(result.componentMeans) as [key, value] (key)}
+								<p>{componentLabel(key)}: {typeof value === 'number' ? `${value.toFixed(1)}%` : 'unsupported'}</p>
+							{/each}
+						</div>
+					{/if}
+				</div>
+			{/each}
+		</section>
+	{/if}
+
 	<section class="summary-strip" aria-label="Benchmark summary">
 		<div><strong>{visualizerSnapshot.metadata.scenarioCount}</strong><span>scenarios</span></div>
 		<div><strong>{repeatCount}</strong><span>repeats</span></div>
 		<div><strong>{visualizerSnapshot.metadata.modelCount}</strong><span>models</span></div>
-		<div><strong>Official</strong><span>results</span></div>
+		<div><strong>{leaderboardMode ? 'Leaderboard' : 'Official'}</strong><span>results</span></div>
 	</section>
 
 	<section class="caveats">
 		<h2>About these results</h2>
-		<p>These are official benchmark results from the hidden scenario suite. Example scenarios are available in the repository for local development only.</p>
+		{#if leaderboardMode}
+			<p>These are official leaderboard results from the hidden scenario suite quality benchmark protocol ({visualizerSnapshot.metadata.scoreKind ?? 'leaderboard-score-v1'}).</p>
+		{:else}
+			<p>These are official foundation benchmark results from the hidden scenario suite. The displayed accuracy reflects the prior one-tool foundation protocol and is not a leaderboard-grade score.</p>
+		{/if}
+		<p>Example scenarios are available in the repository for local development only.</p>
 		<p>All scenario content is original COG-CONTAIN fiction inspired by containment-style settings. No real SCP entries, names, item numbers, object classes, logos, or SCP-specific language are used.</p>
 	</section>
 </main>
+
+<style>
+	.score-detail-block + .score-detail-block {
+		margin-top: 1rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--muted-line);
+	}
+
+	.score-detail-block h3 {
+		font-size: 0.95rem;
+		margin: 0 0 0.35rem;
+	}
+</style>

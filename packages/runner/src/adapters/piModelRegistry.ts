@@ -8,6 +8,7 @@ type RegistryModel = {
 	provider: string;
 	baseUrl: string;
 	reasoning: boolean;
+	thinkingLevelMap?: Partial<Record<"off" | "minimal" | "low" | "medium" | "high" | "xhigh", string | null>>;
 	input: string[];
 	cost: { input: number; output: number; cacheRead: number; cacheWrite: number };
 	contextWindow: number;
@@ -15,7 +16,7 @@ type RegistryModel = {
 };
 
 export function isLiveDryRunProviderId(value: string): value is LiveDryRunProviderId {
-	return value === "openai" || value === "openrouter";
+	return value === "openai" || value === "openrouter" || value === "anthropic";
 }
 
 export function listRegistryProviders(): string[] {

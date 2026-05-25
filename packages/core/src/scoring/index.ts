@@ -194,3 +194,23 @@ export {
 	type ScoreReportVariantSummary
 } from "./scoreReport";
 export { reconstructPostEventTimeline, type TimelineReconstructionResult, type TimelineStatePoint } from "./timeline";
+export {
+	LEADERBOARD_BOOTSTRAP_RESAMPLE_COUNT,
+	LEADERBOARD_BOOTSTRAP_SEED,
+	LEADERBOARD_FAILURE_POLICY,
+	LEADERBOARD_SCORE_KIND,
+	LEADERBOARD_SCORE_VERSION,
+	OFFICIAL_LEADERBOARD_RUN_PROTOCOL,
+	aggregateLeaderboardRow,
+	assessLeaderboardEligibility,
+	computeDeterministicBootstrapMeanInterval,
+	scoreLeaderboardAttempt,
+	type LeaderboardAttemptInput,
+	type LeaderboardAttemptScore,
+	type LeaderboardAttemptStatus,
+	type LeaderboardComponentMeans,
+	type LeaderboardEligibilityAssessment,
+	type LeaderboardHardCapSummary,
+	type LeaderboardPrimaryConfidenceInterval,
+	type LeaderboardRowAggregate
+} from "./leaderboardScore";

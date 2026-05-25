@@ -7,7 +7,7 @@ export type RunnerModelConfig = {
 	displayName?: string;
 };
 
-export type LiveDryRunProviderId = "openai" | "openrouter";
+export type LiveDryRunProviderId = "openai" | "openrouter" | "anthropic";
 export type LiveDryRunMode = "live-dry-run";
 
 export type LiveDryRunModelConfig = {

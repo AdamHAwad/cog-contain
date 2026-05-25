@@ -5,10 +5,24 @@
 	"description": "Pure TypeScript schemas, simulator, scoring, trust, and replay package placeholder for COG-CONTAIN.",
 	"type": "module",
 	"exports": {
-		".": "./src/index.ts"
+		".": "./src/index.ts",
+		"./scoring": "./src/scoring/index.ts",
+		"./scoring/leaderboardScore": "./src/scoring/leaderboardScore.ts",
+		"./scoring/scenarioUtility": "./src/scoring/scenarioUtility.ts"
 	},
 	"scripts": {
-		"typecheck": "tsc --noEmit"
+		"typecheck": "tsc --noEmit",
+		"regression:simulator": "cd ../.. && node --experimental-strip-types packages/core/src/simulator/regression.ts scenario-packs/public-dev/v0.1.0/scenarios/cog_dev_0001_orchard_mirror.json",
+		"regression:scoring": "cd ../.. && node --experimental-strip-types packages/core/src/scoring/regression.ts scenario-packs/public-dev/v0.1.0/scenarios/cog_dev_0001_orchard_mirror.json",
+		"smoke:public-dev": "cd ../.. && node --experimental-strip-types packages/core/src/scoring/publicDevRuntimeSmoke.ts scenario-packs/public-dev/v0.1.0/manifest.json",
+		"smoke:public-dev-v0-2-draft": "cd ../.. && node --experimental-strip-types packages/core/src/scoring/publicDevRuntimeSmoke.ts scenario-packs/public-dev/v0.2.0-draft/manifest.json",
+		"smoke:public-dev-v0-3-draft": "cd ../.. && node --experimental-strip-types packages/core/src/scoring/publicDevRuntimeSmoke.ts scenario-packs/public-dev/v0.3.0-draft/manifest.json",
+		"smoke:public-dev-v0-4-draft": "cd ../.. && node --experimental-strip-types packages/core/src/scoring/publicDevRuntimeSmoke.ts scenario-packs/public-dev/v0.4.0-draft/manifest.json",
+		"smoke:public-dev-v0-5-draft": "cd ../.. && node --experimental-strip-types packages/core/src/scoring/publicDevRuntimeSmoke.ts scenario-packs/public-dev/v0.5.0-draft/manifest.json",
+		"smoke:public-dev-v0-6-draft": "cd ../.. && node --experimental-strip-types packages/core/src/scoring/publicDevRuntimeSmoke.ts scenario-packs/public-dev/v0.6.0-draft/manifest.json",
+		"smoke:public-dev-v0-7-draft": "cd ../.. && node --experimental-strip-types packages/core/src/scoring/publicDevRuntimeSmoke.ts scenario-packs/public-dev/v0.7.0-draft/manifest.json",
+		"smoke:public-dev-v0-8-draft": "cd ../.. && node --experimental-strip-types packages/core/src/scoring/publicDevRuntimeSmoke.ts scenario-packs/public-dev/v0.8.0-draft/manifest.json",
+		"smoke:public-dev-v0-9-draft": "cd ../.. && node --experimental-strip-types packages/core/src/scoring/publicDevRuntimeSmoke.ts scenario-packs/public-dev/v0.9.0-draft/manifest.json"
 	},
 	"devDependencies": {
 		"typescript": "^5.9.3"

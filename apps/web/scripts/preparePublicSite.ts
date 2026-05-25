@@ -12,8 +12,11 @@ function serializePublicSiteSnapshot(snapshot: ReturnType<typeof buildPublicSite
 
 const artifact = JSON.parse(await readFile(artifactUrl, 'utf8')) as Parameters<typeof buildPublicSiteSnapshot>[0];
 if (artifact.kind !== 'cog-contain-public-result-summary') throw new Error('invalid public result kind');
-if (artifact.official !== true || artifact.hiddenEvalAccess !== false || artifact.leaderboardEligible !== false) {
+if (artifact.official !== true || artifact.hiddenEvalAccess !== false) {
 	throw new Error('public site preparation requires official published result flags');
+}
+if (artifact.leaderboardEligible === true && artifact.scoreKind !== 'leaderboard-score-v1') {
+	throw new Error('leaderboardEligible requires scoreKind leaderboard-score-v1');
 }
 
 const publicSiteSnapshot = buildPublicSiteSnapshot(artifact);
