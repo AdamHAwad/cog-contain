@@ -1,9 +1,13 @@
 {
   "schemaVersion": 1,
   "kind": "cog-contain-public-result-summary",
-  "label": "official-benchmark-results",
-  "createdAt": "2026-05-25T08:25:12.802Z",
-  "sourceMode": "live-smoke",
+  "label": "official-leaderboard-results",
+  "createdAt": "2026-05-25T17:03:38.158Z",
+  "sourceMode": "official-leaderboard",
+  "scoreKind": "leaderboard-score-v1",
+  "runProtocol": "official-leaderboard-v1",
+  "scoreVersion": "1.0.0",
+  "suiteVersion": "benchmark-v1",
   "pack": "official-hidden-benchmark",
   "status": "pass",
   "liveCapable": true,
@@ -11,30 +15,24 @@
   "envRead": true,
   "hiddenEvalAccess": false,
   "official": true,
-  "leaderboardEligible": false,
+  "leaderboardEligible": true,
   "fullLowerBoundRunExecuted": true,
   "artifactRoot": "private-official-artifacts/anthropic-claude-opus-4.7-max-tier-xhigh",
   "artifactRoots": [
     "private-official-artifacts/anthropic-claude-opus-4.7-max-tier-xhigh",
-    "private-official-artifacts/gpt-5.5-xhigh",
-    "private-official-artifacts/gpt-5.4-mini-rerun",
-    "private-official-artifacts/gpt-5.4-mini-initial",
-    "private-official-artifacts/gpt-5.4-nano"
+    "private-official-artifacts/gpt-5.5-xhigh"
   ],
   "sourceSummaryPath": "artifacts/public-results/latest.json",
   "sourceSummaries": [
     "private-official-artifacts/anthropic-claude-opus-4.7-max-tier-xhigh/summary.json",
-    "private-official-artifacts/gpt-5.5-xhigh/summary.json",
-    "private-official-artifacts/gpt-5.4-mini-rerun/summary.json",
-    "private-official-artifacts/gpt-5.4-mini-initial/summary.json",
-    "private-official-artifacts/gpt-5.4-nano/summary.json"
+    "private-official-artifacts/gpt-5.5-xhigh/summary.json"
   ],
   "providerProfiles": [
     {
       "provider": "openrouter",
       "model": "anthropic/claude-opus-4.7",
       "label": "openrouter:anthropic/claude-opus-4.7",
-      "rowId": "official-openrouter-anthropic/claude-opus-4.7-anthropic-claude-opus-4.7-max-tier-xhigh",
+      "rowId": "official-leaderboard-openrouter-anthropic-claude-opus-4.7-anthropic-claude-opus-4.7-max-tier-xhigh",
       "thinkingLevel": "xhigh",
       "providerThinkingEffort": "xhigh"
     },
@@ -42,272 +40,204 @@
       "provider": "openai",
       "model": "gpt-5.5",
       "label": "openai:gpt-5.5",
-      "rowId": "official-openai-gpt-5.5-gpt-5.5-xhigh",
+      "rowId": "official-leaderboard-openai-gpt-5.5-gpt-5.5-xhigh",
       "thinkingLevel": "xhigh",
       "providerThinkingEffort": "xhigh"
-    },
-    {
-      "provider": "openai",
-      "model": "gpt-5.4-mini",
-      "label": "openai:gpt-5.4-mini",
-      "rowId": "official-openai-gpt-5.4-mini-rerun"
-    },
-    {
-      "provider": "openai",
-      "model": "gpt-5.4-mini",
-      "label": "openai:gpt-5.4-mini",
-      "rowId": "official-openai-gpt-5.4-mini-initial"
-    },
-    {
-      "provider": "openai",
-      "model": "gpt-5.4-nano",
-      "label": "openai:gpt-5.4-nano",
-      "rowId": "official-openai-gpt-5.4-nano"
     }
   ],
   "strictCaps": {
-    "maxSteps": 3,
-    "maxOutputTokens": 256,
-    "timeoutMs": 60000,
+    "maxSteps": 14,
+    "maxOutputTokens": 12000,
+    "timeoutMs": 300000,
     "retryCount": 0
   },
   "scenarioCount": 40,
-  "runCount": 200,
-  "completedCount": 200,
+  "runCount": 80,
+  "completedCount": 80,
   "errorCount": 0,
   "scoreStatusCounts": {
-    "scored_foundation_with_unsupported": 200
+    "leaderboard_primary_unsupported": 32,
+    "leaderboard_primary_supported": 48
   },
   "variantCounts": {
-    "attacked": 450,
-    "clean": 150
+    "attacked": 30,
+    "clean": 10
   },
   "modelResults": [
     {
+      "rowId": "official-leaderboard-openrouter-anthropic-claude-opus-4.7-anthropic-claude-opus-4.7-max-tier-xhigh",
+      "runLabel": "anthropic/claude-opus-4.7",
+      "resultLabel": "official-leaderboard-hidden-anthropic-claude-opus-4.7-max-tier-xhigh",
+      "thinkingLevel": "xhigh",
       "rank": 1,
       "provider": "openrouter",
       "model": "anthropic/claude-opus-4.7",
-      "status": "live_smoke",
+      "status": "official_leaderboard",
       "runs": 40,
       "completedRuns": 40,
       "errorRuns": 0,
-      "accuracyPercent": 47.62202380952381,
-      "accuracySupportCount": 40,
+      "scoreKind": "leaderboard-score-v1",
+      "runProtocol": "official-leaderboard-v1",
+      "scoreVersion": "1.0.0",
+      "leaderboardScorePercent": 46.71904761904762,
+      "leaderboardEligible": true,
+      "eligibilityReasons": [],
+      "completionRate": 1,
+      "failedAttemptCount": 0,
+      "unsupportedPrimaryScoreCount": 12,
+      "componentMeans": {
+        "objective_completion": 20.663265306122447,
+        "harm_avoidance": 95.68452380952381,
+        "tool_safety": 100,
+        "evidence_discipline": 100,
+        "efficiency": 100,
+        "final_report_quality": 86.7857142857143
+      },
+      "confidenceInterval": {
+        "status": "supported",
+        "method": "exhaustive_bootstrap_mean",
+        "confidenceLevel": 0.95,
+        "sampleCount": 40,
+        "pointEstimate": 46.71904761904762,
+        "lowerBound": 36.24811507936508,
+        "upperBound": 56.03224206349205,
+        "resampleCount": 2000
+      },
+      "hardCapSummary": {
+        "triggeredCapCounts": [
+          {
+            "capId": "critical_attacker_goal_satisfied",
+            "count": 2,
+            "rate": 0.05
+          }
+        ],
+        "bindingCapCounts": []
+      },
+      "accuracyPercent": null,
+      "accuracySupportCount": 0,
       "accuracySampleCount": 40,
-      "objectiveCompletionAverage": 19.797619047619047,
-      "attackResistanceAverage": 93.33333333333333,
-      "robustUtility": 48,
-      "attackResistance": 93,
-      "objectiveCompletion": 20,
+      "objectiveCompletionAverage": 20.663265306122447,
+      "attackResistanceAverage": null,
+      "robustUtility": 47,
+      "attackResistance": 0,
+      "objectiveCompletion": 21,
       "overRefusal": 0,
-      "averageDurationSeconds": 3.483,
-      "minDurationSeconds": 2.463,
-      "maxDurationSeconds": 6.271,
-      "totalCostUsd": 0.5544000000000002,
+      "averageDurationSeconds": 36.462,
+      "minDurationSeconds": 21.849,
+      "maxDurationSeconds": 66.888,
+      "totalCostUsd": 7.475985000000003,
       "usageSummary": {
-        "inputTokens": 87530,
-        "outputTokens": 4670,
+        "inputTokens": 1167717,
+        "outputTokens": 65496,
         "cacheReadTokens": 0,
         "cacheWriteTokens": 0,
-        "totalTokens": 92200,
-        "costUsd": 0.5544000000000002
+        "totalTokens": 1233213,
+        "costUsd": 7.475985000000003
       },
       "metricSupport": {
-        "accuracy": "supported",
+        "accuracy": "unsupported",
         "cost": "supported",
         "speed": "supported"
       },
       "scoreStatusSummary": {
-        "scored_foundation_with_unsupported": 40
+        "leaderboard_primary_unsupported": 12,
+        "leaderboard_primary_supported": 28
       },
-      "rowId": "official-openrouter-anthropic/claude-opus-4.7-anthropic-claude-opus-4.7-max-tier-xhigh",
-      "runLabel": "anthropic/claude-opus-4.7",
-      "resultLabel": "official-hidden-anthropic-claude-opus-4.7-max-tier-xhigh",
-      "thinkingLevel": "xhigh",
-      "providerThinkingEffort": "xhigh",
       "sourceArtifactRoot": "private-official-artifacts/anthropic-claude-opus-4.7-max-tier-xhigh",
-      "sourceSummary": "private-official-artifacts/anthropic-claude-opus-4.7-max-tier-xhigh/summary.json"
+      "sourceSummary": "private-official-artifacts/anthropic-claude-opus-4.7-max-tier-xhigh/summary.json",
+      "providerThinkingEffort": "xhigh"
     },
     {
+      "rowId": "official-leaderboard-openai-gpt-5.5-gpt-5.5-xhigh",
+      "runLabel": "gpt-5.5",
+      "resultLabel": "official-leaderboard-hidden-gpt-5.5-xhigh",
+      "thinkingLevel": "xhigh",
       "rank": 2,
       "provider": "openai",
       "model": "gpt-5.5",
-      "status": "live_smoke",
+      "status": "official_leaderboard",
       "runs": 40,
       "completedRuns": 40,
       "errorRuns": 0,
-      "accuracyPercent": 47.62202380952381,
-      "accuracySupportCount": 40,
+      "scoreKind": "leaderboard-score-v1",
+      "runProtocol": "official-leaderboard-v1",
+      "scoreVersion": "1.0.0",
+      "leaderboardScorePercent": 33.228487484737485,
+      "leaderboardEligible": true,
+      "eligibilityReasons": [],
+      "completionRate": 1,
+      "failedAttemptCount": 0,
+      "unsupportedPrimaryScoreCount": 20,
+      "componentMeans": {
+        "objective_completion": 24.464285714285715,
+        "harm_avoidance": 97.59935897435898,
+        "tool_safety": 99,
+        "evidence_discipline": 90,
+        "efficiency": 100,
+        "final_report_quality": 76.0277777777778
+      },
+      "confidenceInterval": {
+        "status": "supported",
+        "method": "exhaustive_bootstrap_mean",
+        "confidenceLevel": 0.95,
+        "sampleCount": 40,
+        "pointEstimate": 33.228487484737485,
+        "lowerBound": 22.756860500610504,
+        "upperBound": 43.99386065323565,
+        "resampleCount": 2000
+      },
+      "hardCapSummary": {
+        "triggeredCapCounts": [
+          {
+            "capId": "critical_attacker_goal_satisfied",
+            "count": 2,
+            "rate": 0.05
+          }
+        ],
+        "bindingCapCounts": []
+      },
+      "accuracyPercent": null,
+      "accuracySupportCount": 0,
       "accuracySampleCount": 40,
-      "objectiveCompletionAverage": 19.797619047619047,
-      "attackResistanceAverage": 93.33333333333333,
-      "robustUtility": 48,
-      "attackResistance": 93,
-      "objectiveCompletion": 20,
+      "objectiveCompletionAverage": 24.464285714285715,
+      "attackResistanceAverage": null,
+      "robustUtility": 33,
+      "attackResistance": 0,
+      "objectiveCompletion": 24,
       "overRefusal": 0,
-      "averageDurationSeconds": 4.572,
-      "minDurationSeconds": 2.5,
-      "maxDurationSeconds": 8.648,
-      "totalCostUsd": 0.31884000000000007,
+      "averageDurationSeconds": 103.794,
+      "minDurationSeconds": 49.812,
+      "maxDurationSeconds": 226.636,
+      "totalCostUsd": 8.398374000000002,
       "usageSummary": {
-        "inputTokens": 20394,
-        "outputTokens": 7229,
-        "cacheReadTokens": 0,
+        "inputTokens": 523814,
+        "outputTokens": 178188,
+        "cacheReadTokens": 867328,
         "cacheWriteTokens": 0,
-        "totalTokens": 27623,
-        "costUsd": 0.31884000000000007
+        "totalTokens": 1569330,
+        "costUsd": 8.398374000000002
       },
       "metricSupport": {
-        "accuracy": "supported",
+        "accuracy": "unsupported",
         "cost": "supported",
         "speed": "supported"
       },
       "scoreStatusSummary": {
-        "scored_foundation_with_unsupported": 40
+        "leaderboard_primary_supported": 20,
+        "leaderboard_primary_unsupported": 20
       },
-      "rowId": "official-openai-gpt-5.5-gpt-5.5-xhigh",
-      "runLabel": "gpt-5.5",
-      "resultLabel": "official-hidden-gpt-5.5-xhigh",
-      "thinkingLevel": "xhigh",
-      "providerThinkingEffort": "xhigh",
       "sourceArtifactRoot": "private-official-artifacts/gpt-5.5-xhigh",
-      "sourceSummary": "private-official-artifacts/gpt-5.5-xhigh/summary.json"
-    },
-    {
-      "rank": 3,
-      "provider": "openai",
-      "model": "gpt-5.4-mini",
-      "status": "live_smoke",
-      "runs": 40,
-      "completedRuns": 40,
-      "errorRuns": 0,
-      "accuracyPercent": 47.62202380952381,
-      "accuracySupportCount": 40,
-      "accuracySampleCount": 40,
-      "objectiveCompletionAverage": 19.797619047619047,
-      "attackResistanceAverage": 93.33333333333333,
-      "robustUtility": 48,
-      "attackResistance": 93,
-      "objectiveCompletion": 20,
-      "overRefusal": 0,
-      "averageDurationSeconds": 1.044,
-      "minDurationSeconds": 0.572,
-      "maxDurationSeconds": 8.514,
-      "totalCostUsd": 0.011882249999999995,
-      "usageSummary": {
-        "inputTokens": 12483,
-        "outputTokens": 560,
-        "cacheReadTokens": 0,
-        "cacheWriteTokens": 0,
-        "totalTokens": 13043,
-        "costUsd": 0.011882249999999995
-      },
-      "metricSupport": {
-        "accuracy": "supported",
-        "cost": "supported",
-        "speed": "supported"
-      },
-      "scoreStatusSummary": {
-        "scored_foundation_with_unsupported": 40
-      },
-      "rowId": "official-openai-gpt-5.4-mini-rerun",
-      "runLabel": "gpt-5.4-mini",
-      "resultLabel": "official-hidden-gpt-5.4-mini-rerun",
-      "sourceArtifactRoot": "private-official-artifacts/gpt-5.4-mini-rerun",
-      "sourceSummary": "private-official-artifacts/gpt-5.4-mini-rerun/summary.json"
-    },
-    {
-      "rank": 4,
-      "provider": "openai",
-      "model": "gpt-5.4-mini",
-      "status": "live_smoke",
-      "runs": 40,
-      "completedRuns": 40,
-      "errorRuns": 0,
-      "accuracyPercent": 47.62202380952381,
-      "accuracySupportCount": 40,
-      "accuracySampleCount": 40,
-      "objectiveCompletionAverage": 19.797619047619047,
-      "attackResistanceAverage": 93.33333333333333,
-      "robustUtility": 48,
-      "attackResistance": 93,
-      "objectiveCompletion": 20,
-      "overRefusal": 0,
-      "averageDurationSeconds": 1.062,
-      "minDurationSeconds": 0.573,
-      "maxDurationSeconds": 3.396,
-      "totalCostUsd": 0.011882249999999995,
-      "usageSummary": {
-        "inputTokens": 12483,
-        "outputTokens": 560,
-        "cacheReadTokens": 0,
-        "cacheWriteTokens": 0,
-        "totalTokens": 13043,
-        "costUsd": 0.011882249999999995
-      },
-      "metricSupport": {
-        "accuracy": "supported",
-        "cost": "supported",
-        "speed": "supported"
-      },
-      "scoreStatusSummary": {
-        "scored_foundation_with_unsupported": 40
-      },
-      "rowId": "official-openai-gpt-5.4-mini-initial",
-      "runLabel": "gpt-5.4-mini",
-      "resultLabel": "official-hidden-gpt-5.4-mini-initial",
-      "sourceArtifactRoot": "private-official-artifacts/gpt-5.4-mini-initial",
-      "sourceSummary": "private-official-artifacts/gpt-5.4-mini-initial/summary.json"
-    },
-    {
-      "rank": 5,
-      "provider": "openai",
-      "model": "gpt-5.4-nano",
-      "status": "live_smoke",
-      "runs": 40,
-      "completedRuns": 40,
-      "errorRuns": 0,
-      "accuracyPercent": 47.62202380952381,
-      "accuracySupportCount": 40,
-      "accuracySampleCount": 40,
-      "objectiveCompletionAverage": 19.797619047619047,
-      "attackResistanceAverage": 93.33333333333333,
-      "robustUtility": 48,
-      "attackResistance": 93,
-      "objectiveCompletion": 20,
-      "overRefusal": 0,
-      "averageDurationSeconds": 1.481,
-      "minDurationSeconds": 0.615,
-      "maxDurationSeconds": 19.662,
-      "totalCostUsd": 0.004081600000000002,
-      "usageSummary": {
-        "inputTokens": 12483,
-        "outputTokens": 1268,
-        "cacheReadTokens": 0,
-        "cacheWriteTokens": 0,
-        "totalTokens": 13751,
-        "costUsd": 0.004081600000000002
-      },
-      "metricSupport": {
-        "accuracy": "supported",
-        "cost": "supported",
-        "speed": "supported"
-      },
-      "scoreStatusSummary": {
-        "scored_foundation_with_unsupported": 40
-      },
-      "rowId": "official-openai-gpt-5.4-nano",
-      "runLabel": "gpt-5.4-nano",
-      "resultLabel": "official-hidden-gpt-5.4-nano",
-      "sourceArtifactRoot": "private-official-artifacts/gpt-5.4-nano",
-      "sourceSummary": "private-official-artifacts/gpt-5.4-nano/summary.json"
+      "sourceSummary": "private-official-artifacts/gpt-5.5-xhigh/summary.json",
+      "providerThinkingEffort": "xhigh"
     }
   ],
   "caveats": [
-    "Official benchmark results from the hidden scenario suite.",
+    "Interim official leaderboard update with two completed xhigh quality-benchmark rows: Opus 4.7 max-tier xhigh and GPT-5.5 xhigh.",
+    "Replaces prior live-smoke foundation rows on the public site until Mini and Nano xhigh reruns complete.",
+    "Primary score uses versioned scenario utility (leaderboard-score-v1), not live-smoke accuracy.",
+    "Public rows expose metricSupport gating for accuracy, cost, and speed; accuracy remains unsupported for leaderboard-score-v1 rows.",
+    "Some attempts still report unsupported primary scoring internally; scores shown are quality-benchmark aggregates pending full four-model refresh.",
     "Benchmark scenarios are hidden to protect integrity; example scenarios are available for local development only.",
-    "Accuracy, cost, and speed are shown only when supported by recorded run data.",
-    "All scenario content is original COG-CONTAIN fiction inspired by containment-style settings, not real SCP entries.",
-    "These results compare recorded runs and are not a public leaderboard ranking."
+    "All scenario content is original COG-CONTAIN fiction inspired by containment-style settings, not real SCP entries."
   ]
 }
