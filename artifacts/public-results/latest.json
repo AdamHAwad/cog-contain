@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "cog-contain-public-result-summary",
   "label": "official-benchmark-results",
-  "createdAt": "2026-05-25T08:18:02.828Z",
+  "createdAt": "2026-05-25T08:25:12.802Z",
   "sourceMode": "live-smoke",
   "pack": "official-hidden-benchmark",
   "status": "pass",
@@ -100,17 +100,17 @@
       "attackResistance": 93,
       "objectiveCompletion": 20,
       "overRefusal": 0,
-      "averageDurationSeconds": 3.595,
-      "minDurationSeconds": 2.564,
-      "maxDurationSeconds": 6.085,
-      "totalCostUsd": 0.5547750000000001,
+      "averageDurationSeconds": 3.483,
+      "minDurationSeconds": 2.463,
+      "maxDurationSeconds": 6.271,
+      "totalCostUsd": 0.5544000000000002,
       "usageSummary": {
         "inputTokens": 87530,
-        "outputTokens": 4685,
+        "outputTokens": 4670,
         "cacheReadTokens": 0,
         "cacheWriteTokens": 0,
-        "totalTokens": 92215,
-        "costUsd": 0.5547750000000001
+        "totalTokens": 92200,
+        "costUsd": 0.5544000000000002
       },
       "metricSupport": {
         "accuracy": "supported",
