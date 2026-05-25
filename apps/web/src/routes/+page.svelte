@@ -65,7 +65,14 @@
 	}
 
 	function providerName(value: string) {
-		return value === 'openai' ? 'OpenAI' : value;
+		if (value === 'openai') return 'OpenAI';
+		if (value === 'openrouter') return 'OpenRouter';
+		return value;
+	}
+
+	function modelName(result: VisualizerModelResult) {
+		const effort = result.providerThinkingEffort ?? result.thinkingLevel;
+		return effort ? `${result.model} ${effort}` : result.model;
 	}
 </script>
 
@@ -109,7 +116,7 @@
 				{#each visualizerSnapshot.results as result (result.rowId)}
 					<label>
 						<input type="checkbox" checked={selectedRows.includes(result.rowId)} onchange={() => toggleRow(result.rowId)} />
-						<span>{providerName(result.provider)}</span>{result.model}
+						<span>{providerName(result.provider)}</span>{modelName(result)}
 					</label>
 				{/each}
 			</div>
@@ -131,7 +138,7 @@
 				{#each accuracyRows as result (result.rowId)}
 					<div class="bar-row top-row">
 						<p class="rank" style:color={modelColor(result)}>{String(result.rank).padStart(2, '0')}</p>
-						<p class="model"><span>{providerName(result.provider)}</span>{result.model}</p>
+						<p class="model"><span>{providerName(result.provider)}</span>{modelName(result)}</p>
 						<div class="track"><i style:width={`${(supportedNumber(result.accuracyPercent) / maxAccuracy) * 100}%`} style:background={modelColor(result)}></i></div>
 						<p class="value">{pct(result.accuracyPercent)}</p>
 					</div>
@@ -146,7 +153,7 @@
 				{#each costRows as result (result.rowId)}
 					<div class="bar-row">
 						<p class="rank" style:color={modelColor(result)}>{String(result.rank).padStart(2, '0')}</p>
-						<p class="model"><span>{providerName(result.provider)}</span>{result.model}</p>
+						<p class="model"><span>{providerName(result.provider)}</span>{modelName(result)}</p>
 						<div class="track"><i style:width={`${Math.max(3, (supportedNumber(result.totalCostUsd) / maxCost) * 100)}%`} style:background={modelColor(result)}></i></div>
 						<p class="value">{money(result.totalCostUsd)}</p>
 					</div>
@@ -161,7 +168,7 @@
 				{#each speedRows as result (result.rowId)}
 					<div class="bar-row">
 						<p class="rank" style:color={modelColor(result)}>{String(result.rank).padStart(2, '0')}</p>
-						<p class="model"><span>{providerName(result.provider)}</span>{result.model}</p>
+						<p class="model"><span>{providerName(result.provider)}</span>{modelName(result)}</p>
 						<div class="track"><i style:width={`${Math.max(3, (supportedNumber(result.averageDurationSeconds) / maxDuration) * 100)}%`} style:background={modelColor(result)}></i></div>
 						<p class="value">{seconds(result.averageDurationSeconds)}</p>
 					</div>
@@ -171,7 +178,7 @@
 
 		<div class="legend-grid">
 			{#each filteredResults as result (result.rowId)}
-				<p><span style:color={modelColor(result)}>{result.rank}</span> {providerName(result.provider)} / {result.model}</p>
+				<p><span style:color={modelColor(result)}>{result.rank}</span> {providerName(result.provider)} / {modelName(result)}</p>
 			{/each}
 		</div>
 	</section>

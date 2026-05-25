@@ -19,7 +19,7 @@ export type PublicResultSummary = {
 	artifactRoots?: string[];
 	sourceSummaryPath: string;
 	sourceSummaries?: string[];
-	providerProfiles: { provider: string; model: string; label: string; rowId?: string }[];
+	providerProfiles: { provider: string; model: string; label: string; rowId?: string; thinkingLevel?: string; providerThinkingEffort?: string }[];
 	strictCaps: { maxSteps: number; maxOutputTokens: number; timeoutMs: number; retryCount: number };
 	scenarioCount: number;
 	runCount: number;
@@ -31,6 +31,8 @@ export type PublicResultSummary = {
 		rowId?: string;
 		runLabel?: string;
 		resultLabel?: string;
+		thinkingLevel?: string;
+		providerThinkingEffort?: string;
 		rank: number;
 		model: string;
 		provider: string;
@@ -64,6 +66,8 @@ export type VisualizerModelResult = {
 	model: string;
 	provider: string;
 	runLabel: string;
+	thinkingLevel?: string;
+	providerThinkingEffort?: string;
 	accuracyPercent: number | null;
 	accuracySupportCount: number;
 	accuracySampleCount: number;
@@ -155,6 +159,8 @@ function asVisualizerResult(result: PublicResultSummary['modelResults'][number])
 		rowId?: unknown;
 		runLabel?: unknown;
 		resultLabel?: unknown;
+		thinkingLevel?: unknown;
+		providerThinkingEffort?: unknown;
 		accuracyPercent?: unknown;
 		accuracySupportCount?: unknown;
 		accuracySampleCount?: unknown;
@@ -167,12 +173,16 @@ function asVisualizerResult(result: PublicResultSummary['modelResults'][number])
 	};
 	const rowId = typeof resultWithMetrics.rowId === 'string' && resultWithMetrics.rowId.length > 0 ? resultWithMetrics.rowId : `${result.provider}:${result.model}:${result.rank}`;
 	const runLabel = typeof resultWithMetrics.runLabel === 'string' && resultWithMetrics.runLabel.length > 0 ? resultWithMetrics.runLabel : typeof resultWithMetrics.resultLabel === 'string' && resultWithMetrics.resultLabel.length > 0 ? resultWithMetrics.resultLabel : result.model;
+	const thinkingLevel = typeof resultWithMetrics.thinkingLevel === 'string' && resultWithMetrics.thinkingLevel.length > 0 ? resultWithMetrics.thinkingLevel : undefined;
+	const providerThinkingEffort = typeof resultWithMetrics.providerThinkingEffort === 'string' && resultWithMetrics.providerThinkingEffort.length > 0 ? resultWithMetrics.providerThinkingEffort : undefined;
 	return {
 		rowId,
 		rank: result.rank,
 		model: result.model,
 		provider: result.provider,
 		runLabel,
+		...(thinkingLevel === undefined ? {} : { thinkingLevel }),
+		...(providerThinkingEffort === undefined ? {} : { providerThinkingEffort }),
 		accuracyPercent: numberOrNull(resultWithMetrics.accuracyPercent),
 		accuracySupportCount: Number(resultWithMetrics.accuracySupportCount ?? 0),
 		accuracySampleCount: Number(resultWithMetrics.accuracySampleCount ?? result.runs),
