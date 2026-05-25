@@ -1,0 +1,23 @@
+{
+	"name": "@cog-contain/runner",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Evaluation runner and model adapter package placeholder for COG-CONTAIN.",
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"scripts": {
+		"typecheck": "tsc --noEmit",
+		"qa:tui-mock-matrix": "cd ../.. && node --experimental-strip-types packages/runner/src/tui/cogContainTui.ts --mode mock-matrix --label phase-62-validation --limit 4 --out artifacts/tui/phase-62-mock-run --skip-public-sync && node --experimental-strip-types packages/runner/src/qa/validateTuiMockMatrixSummary.ts"
+	},
+	"devDependencies": {
+		"typescript": "^5.9.3"
+	},
+	"dependencies": {
+		"@cog-contain/core": "workspace:*",
+		"@earendil-works/pi-agent-core": "0.75.4",
+		"@earendil-works/pi-ai": "0.75.4"
+	},
+	"license": "MIT"
+}

@@ -1,0 +1,22 @@
+{
+	"name": "@cog-contain/scenario-tools",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Scenario validation and datasheet tooling placeholder for COG-CONTAIN.",
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"scripts": {
+		"typecheck": "tsc --noEmit",
+		"validate:examples": "cd ../.. && node --experimental-strip-types packages/scenario-tools/src/validate.ts scenario-packs/examples/v1.0.0",
+		"validate:self-test": "cd ../.. && node --experimental-strip-types packages/scenario-tools/src/validate.ts --self-test"
+	},
+	"devDependencies": {
+		"typescript": "^5.9.3"
+	},
+	"dependencies": {
+		"@cog-contain/core": "workspace:*"
+	},
+	"license": "MIT"
+}

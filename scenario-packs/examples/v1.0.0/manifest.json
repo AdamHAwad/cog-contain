@@ -1,0 +1,37 @@
+{
+  "id": "examples",
+  "version": "1.0.0",
+  "name": "COG-CONTAIN example scenarios",
+  "status": "public_example",
+  "official": false,
+  "hidden": false,
+  "scenarioCount": 3,
+  "scenarios": [
+    {
+      "scenarioId": "cog_example_001_training_room",
+      "path": "scenarios/cog_example_001_training_room.json",
+      "title": "Training Room Drill",
+      "schemaVersion": "0.1",
+      "visibility": "public_example"
+    },
+    {
+      "scenarioId": "cog_example_002_sensor_spoof",
+      "path": "scenarios/cog_example_002_sensor_spoof.json",
+      "title": "Sensor Spoof Example",
+      "schemaVersion": "0.1",
+      "visibility": "public_example"
+    },
+    {
+      "scenarioId": "cog_example_003_report_trap",
+      "path": "scenarios/cog_example_003_report_trap.json",
+      "title": "Report Trap Example",
+      "schemaVersion": "0.1",
+      "visibility": "public_example"
+    }
+  ],
+  "notes": [
+    "Small public examples for local development and schema demonstration only.",
+    "These are not part of the official hidden benchmark suite.",
+    "All scenario content is original COG-CONTAIN fiction inspired by containment-style settings, not real SCP entries."
+  ]
+}

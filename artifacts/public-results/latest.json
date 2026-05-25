@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "kind": "cog-contain-public-result-summary",
+  "label": "official-benchmark-results",
+  "createdAt": "2026-05-25T02:40:54.574Z",
+  "sourceMode": "live-smoke",
+  "pack": "official-hidden-benchmark",
+  "status": "pass",
+  "liveCapable": true,
+  "liveCalls": true,
+  "envRead": true,
+  "hiddenEvalAccess": false,
+  "official": true,
+  "leaderboardEligible": false,
+  "fullLowerBoundRunExecuted": true,
+  "artifactRoot": "private-official-artifacts/gpt-5.4-mini-rerun",
+  "artifactRoots": [
+    "private-official-artifacts/gpt-5.4-mini-rerun",
+    "private-official-artifacts/gpt-5.4-mini-initial",
+    "private-official-artifacts/gpt-5.4-nano"
+  ],
+  "sourceSummaryPath": "artifacts/public-results/latest.json",
+  "sourceSummaries": [
+    "private-official-artifacts/gpt-5.4-mini-rerun/summary.json",
+    "private-official-artifacts/gpt-5.4-mini-initial/summary.json",
+    "private-official-artifacts/gpt-5.4-nano/summary.json"
+  ],
+  "providerProfiles": [
+    {
+      "provider": "openai",
+      "model": "gpt-5.4-mini",
+      "label": "openai:gpt-5.4-mini",
+      "rowId": "official-openai-gpt-5.4-mini-rerun"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5.4-mini",
+      "label": "openai:gpt-5.4-mini",
+      "rowId": "official-openai-gpt-5.4-mini-initial"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5.4-nano",
+      "label": "openai:gpt-5.4-nano",
+      "rowId": "official-openai-gpt-5.4-nano"
+    }
+  ],
+  "strictCaps": {
+    "maxSteps": 3,
+    "maxOutputTokens": 256,
+    "timeoutMs": 60000,
+    "retryCount": 0
+  },
+  "scenarioCount": 40,
+  "runCount": 120,
+  "completedCount": 120,
+  "errorCount": 0,
+  "scoreStatusCounts": {
+    "scored_foundation_with_unsupported": 120
+  },
+  "variantCounts": {
+    "attacked": 90,
+    "clean": 30
+  },
+  "modelResults": [
+    {
+      "rank": 1,
+      "provider": "openai",
+      "model": "gpt-5.4-mini",
+      "status": "live_smoke",
+      "runs": 40,
+      "completedRuns": 40,
+      "errorRuns": 0,
+      "accuracyPercent": 47.62202380952381,
+      "accuracySupportCount": 40,
+      "accuracySampleCount": 40,
+      "objectiveCompletionAverage": 19.797619047619047,
+      "attackResistanceAverage": 93.33333333333333,
+      "robustUtility": 48,
+      "attackResistance": 93,
+      "objectiveCompletion": 20,
+      "overRefusal": 0,
+      "averageDurationSeconds": 1.044,
+      "minDurationSeconds": 0.572,
+      "maxDurationSeconds": 8.514,
+      "totalCostUsd": 0.011882249999999995,
+      "usageSummary": {
+        "inputTokens": 12483,
+        "outputTokens": 560,
+        "cacheReadTokens": 0,
+        "cacheWriteTokens": 0,
+        "totalTokens": 13043,
+        "costUsd": 0.011882249999999995
+      },
+      "metricSupport": {
+        "accuracy": "supported",
+        "cost": "supported",
+        "speed": "supported"
+      },
+      "scoreStatusSummary": {
+        "scored_foundation_with_unsupported": 40
+      },
+      "rowId": "official-openai-gpt-5.4-mini-rerun",
+      "runLabel": "gpt-5.4-mini",
+      "resultLabel": "official-hidden-gpt-5.4-mini-rerun",
+      "sourceArtifactRoot": "private-official-artifacts/gpt-5.4-mini-rerun",
+      "sourceSummary": "private-official-artifacts/gpt-5.4-mini-rerun/summary.json"
+    },
+    {
+      "rank": 2,
+      "provider": "openai",
+      "model": "gpt-5.4-mini",
+      "status": "live_smoke",
+      "runs": 40,
+      "completedRuns": 40,
+      "errorRuns": 0,
+      "accuracyPercent": 47.62202380952381,
+      "accuracySupportCount": 40,
+      "accuracySampleCount": 40,
+      "objectiveCompletionAverage": 19.797619047619047,
+      "attackResistanceAverage": 93.33333333333333,
+      "robustUtility": 48,
+      "attackResistance": 93,
+      "objectiveCompletion": 20,
+      "overRefusal": 0,
+      "averageDurationSeconds": 1.062,
+      "minDurationSeconds": 0.573,
+      "maxDurationSeconds": 3.396,
+      "totalCostUsd": 0.011882249999999995,
+      "usageSummary": {
+        "inputTokens": 12483,
+        "outputTokens": 560,
+        "cacheReadTokens": 0,
+        "cacheWriteTokens": 0,
+        "totalTokens": 13043,
+        "costUsd": 0.011882249999999995
+      },
+      "metricSupport": {
+        "accuracy": "supported",
+        "cost": "supported",
+        "speed": "supported"
+      },
+      "scoreStatusSummary": {
+        "scored_foundation_with_unsupported": 40
+      },
+      "rowId": "official-openai-gpt-5.4-mini-initial",
+      "runLabel": "gpt-5.4-mini",
+      "resultLabel": "official-hidden-gpt-5.4-mini-initial",
+      "sourceArtifactRoot": "private-official-artifacts/gpt-5.4-mini-initial",
+      "sourceSummary": "private-official-artifacts/gpt-5.4-mini-initial/summary.json"
+    },
+    {
+      "rank": 3,
+      "provider": "openai",
+      "model": "gpt-5.4-nano",
+      "status": "live_smoke",
+      "runs": 40,
+      "completedRuns": 40,
+      "errorRuns": 0,
+      "accuracyPercent": 47.62202380952381,
+      "accuracySupportCount": 40,
+      "accuracySampleCount": 40,
+      "objectiveCompletionAverage": 19.797619047619047,
+      "attackResistanceAverage": 93.33333333333333,
+      "robustUtility": 48,
+      "attackResistance": 93,
+      "objectiveCompletion": 20,
+      "overRefusal": 0,
+      "averageDurationSeconds": 1.481,
+      "minDurationSeconds": 0.615,
+      "maxDurationSeconds": 19.662,
+      "totalCostUsd": 0.004081600000000002,
+      "usageSummary": {
+        "inputTokens": 12483,
+        "outputTokens": 1268,
+        "cacheReadTokens": 0,
+        "cacheWriteTokens": 0,
+        "totalTokens": 13751,
+        "costUsd": 0.004081600000000002
+      },
+      "metricSupport": {
+        "accuracy": "supported",
+        "cost": "supported",
+        "speed": "supported"
+      },
+      "scoreStatusSummary": {
+        "scored_foundation_with_unsupported": 40
+      },
+      "rowId": "official-openai-gpt-5.4-nano",
+      "runLabel": "gpt-5.4-nano",
+      "resultLabel": "official-hidden-gpt-5.4-nano",
+      "sourceArtifactRoot": "private-official-artifacts/gpt-5.4-nano",
+      "sourceSummary": "private-official-artifacts/gpt-5.4-nano/summary.json"
+    }
+  ],
+  "caveats": [
+    "Official benchmark results from the hidden scenario suite.",
+    "Benchmark scenarios are hidden to protect integrity; example scenarios are available for local development only.",
+    "Accuracy, cost, and speed are shown only when supported by recorded run data.",
+    "All scenario content is original COG-CONTAIN fiction inspired by containment-style settings, not real SCP entries.",
+    "These results compare recorded runs and are not a public leaderboard ranking."
+  ]
+}

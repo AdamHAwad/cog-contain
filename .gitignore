@@ -1,0 +1,63 @@
+# Environment, secrets, and agent-local state
+.env
+.env.*
+!.env.example
+.env.local
+.env.*.local
+
+# Dependency installs
+node_modules/
+.pnpm-store/
+
+# Build and framework outputs
+dist/
+build/
+coverage/
+.svelte-kit/
+.output/
+.vercel/
+.netlify/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# Local benchmark artifacts and run outputs
+artifacts/**
+!artifacts/
+!artifacts/public-results/
+!artifacts/public-results/latest.json
+artifacts/local-results/
+runs/
+local-runs/
+reports/local/
+replay-artifacts/
+
+# Hidden or private benchmark material must never enter the public repo by accident
+scenario-packs/official-hidden/
+scenario-packs/**/hidden/
+scenario-packs/**/private/
+
+# Convex local/generated state and secrets
+.convex/
+apps/web/.env
+apps/web/.env.*
+!apps/web/.env.example
+apps/web/convex/.env*
+apps/web/convex/.convex/
+
+# Generated web runtime result JSON (prepared by local/public site scripts)
+apps/web/static/results/latest.json
+
+# Generated visual concepts/screenshots that may contain prompt or key material
+screenshots/
+docs/design/concepts/generated/
+docs/design/assets/generated/
+assets/generated/
+
+# OS/editor noise
+.DS_Store
+.idea/
+.vscode/
