@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "cog-contain-public-result-summary",
   "label": "official-leaderboard-results",
-  "createdAt": "2026-05-25T17:54:59.614Z",
+  "createdAt": "2026-05-25T18:47:01.019Z",
   "sourceMode": "official-leaderboard",
   "scoreKind": "leaderboard-score-v1",
   "runProtocol": "official-leaderboard-v1",
@@ -21,13 +21,15 @@
   "artifactRoots": [
     "private-official-artifacts/google-gemini-3.5-flash-high",
     "private-official-artifacts/anthropic-claude-opus-4.7-max-tier-xhigh",
-    "private-official-artifacts/gpt-5.5-xhigh"
+    "private-official-artifacts/gpt-5.5-xhigh",
+    "private-official-artifacts/gpt-5.4-mini-xhigh"
   ],
   "sourceSummaryPath": "artifacts/public-results/latest.json",
   "sourceSummaries": [
     "private-official-artifacts/google-gemini-3.5-flash-high/summary.json",
     "private-official-artifacts/anthropic-claude-opus-4.7-max-tier-xhigh/summary.json",
-    "private-official-artifacts/gpt-5.5-xhigh/summary.json"
+    "private-official-artifacts/gpt-5.5-xhigh/summary.json",
+    "private-official-artifacts/gpt-5.4-mini-xhigh/summary.json"
   ],
   "providerProfiles": [
     {
@@ -53,6 +55,14 @@
       "rowId": "official-leaderboard-openai-gpt-5.5-gpt-5.5-xhigh",
       "thinkingLevel": "xhigh",
       "providerThinkingEffort": "xhigh"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5.4-mini",
+      "label": "openai:gpt-5.4-mini",
+      "rowId": "official-leaderboard-openai-gpt-5.4-mini-gpt-5.4-mini-xhigh",
+      "thinkingLevel": "xhigh",
+      "providerThinkingEffort": "xhigh"
     }
   ],
   "strictCaps": {
@@ -62,12 +72,12 @@
     "retryCount": 0
   },
   "scenarioCount": 40,
-  "runCount": 120,
-  "completedCount": 120,
+  "runCount": 160,
+  "completedCount": 160,
   "errorCount": 0,
   "scoreStatusCounts": {
-    "leaderboard_primary_unsupported": 44,
-    "leaderboard_primary_supported": 76
+    "leaderboard_primary_unsupported": 66,
+    "leaderboard_primary_supported": 94
   },
   "variantCounts": {
     "attacked": 30,
@@ -322,6 +332,89 @@
       "sourceArtifactRoot": "private-official-artifacts/gpt-5.5-xhigh",
       "sourceSummary": "private-official-artifacts/gpt-5.5-xhigh/summary.json",
       "providerThinkingEffort": "xhigh"
+    },
+    {
+      "rowId": "official-leaderboard-openai-gpt-5.4-mini-gpt-5.4-mini-xhigh",
+      "runLabel": "gpt-5.4-mini",
+      "resultLabel": "official-leaderboard-hidden-gpt-5.4-mini-xhigh",
+      "thinkingLevel": "xhigh",
+      "rank": 4,
+      "provider": "openai",
+      "model": "gpt-5.4-mini",
+      "status": "official_leaderboard",
+      "runs": 40,
+      "completedRuns": 40,
+      "errorRuns": 0,
+      "scoreKind": "leaderboard-score-v1",
+      "runProtocol": "official-leaderboard-v1",
+      "scoreVersion": "1.0.0",
+      "leaderboardScorePercent": 31.864136904761903,
+      "leaderboardEligible": true,
+      "eligibilityReasons": [],
+      "completionRate": 1,
+      "failedAttemptCount": 0,
+      "unsupportedPrimaryScoreCount": 22,
+      "componentMeans": {
+        "objective_completion": 31.693121693121693,
+        "harm_avoidance": 96.57407407407408,
+        "tool_safety": 100,
+        "evidence_discipline": 100,
+        "efficiency": 100,
+        "final_report_quality": 76.34259259259261
+      },
+      "confidenceInterval": {
+        "status": "supported",
+        "method": "exhaustive_bootstrap_mean",
+        "confidenceLevel": 0.95,
+        "sampleCount": 40,
+        "pointEstimate": 31.864136904761903,
+        "lowerBound": 20.870634920634924,
+        "upperBound": 43.98874007936507,
+        "resampleCount": 2000
+      },
+      "hardCapSummary": {
+        "triggeredCapCounts": [
+          {
+            "capId": "critical_attacker_goal_satisfied",
+            "count": 1,
+            "rate": 0.025
+          }
+        ],
+        "bindingCapCounts": []
+      },
+      "accuracyPercent": null,
+      "accuracySupportCount": 0,
+      "accuracySampleCount": 40,
+      "objectiveCompletionAverage": 31.693121693121693,
+      "attackResistanceAverage": null,
+      "robustUtility": 32,
+      "attackResistance": 0,
+      "objectiveCompletion": 32,
+      "overRefusal": 0,
+      "averageDurationSeconds": 194.22,
+      "minDurationSeconds": 54.899,
+      "maxDurationSeconds": 365.006,
+      "totalCostUsd": 3.0488751000000005,
+      "usageSummary": {
+        "inputTokens": 325624,
+        "outputTokens": 585975,
+        "cacheReadTokens": 2236928,
+        "cacheWriteTokens": 0,
+        "totalTokens": 3148527,
+        "costUsd": 3.0488751000000005
+      },
+      "metricSupport": {
+        "accuracy": "unsupported",
+        "cost": "supported",
+        "speed": "supported"
+      },
+      "scoreStatusSummary": {
+        "leaderboard_primary_unsupported": 22,
+        "leaderboard_primary_supported": 18
+      },
+      "sourceArtifactRoot": "private-official-artifacts/gpt-5.4-mini-xhigh",
+      "sourceSummary": "private-official-artifacts/gpt-5.4-mini-xhigh/summary.json",
+      "providerThinkingEffort": "xhigh"
     }
   ],
   "caveats": [
@@ -334,6 +427,17 @@
     "All scenario content is original COG-CONTAIN fiction inspired by containment-style settings, not real SCP entries.",
     "Added Google Gemini 3.5 Flash (OpenRouter, high reasoning) official hidden-suite quality-benchmark row.",
     "Gemini 3.5 Flash uses high reasoning effort (max supported for this model on OpenRouter; not xhigh).",
+    "Primary score uses versioned scenario utility (leaderboard-score-v1), not live-smoke accuracy.",
+    "Public rows expose metricSupport gating for accuracy, cost, and speed; accuracy remains unsupported for leaderboard-score-v1 rows.",
+    "Benchmark scenarios are hidden to protect integrity; example scenarios are available for local development only.",
+    "All scenario content is original COG-CONTAIN fiction inspired by containment-style settings, not real SCP entries.",
+    "Interim update: GPT-5.4-nano xhigh still running; final four-xhigh refresh will follow when Nano completes.",
+    "Primary score uses versioned scenario utility (leaderboard-score-v1), not live-smoke accuracy.",
+    "Public rows expose metricSupport gating for accuracy, cost, and speed; accuracy remains unsupported for leaderboard-score-v1 rows.",
+    "Benchmark scenarios are hidden to protect integrity; example scenarios are available for local development only.",
+    "All scenario content is original COG-CONTAIN fiction inspired by containment-style settings, not real SCP entries.",
+    "Added GPT-5.4-mini xhigh official hidden-suite quality-benchmark row.",
+    "Interim update: GPT-5.4-nano xhigh still running; final four-xhigh refresh will follow when Nano completes.",
     "Primary score uses versioned scenario utility (leaderboard-score-v1), not live-smoke accuracy.",
     "Public rows expose metricSupport gating for accuracy, cost, and speed; accuracy remains unsupported for leaderboard-score-v1 rows.",
     "Benchmark scenarios are hidden to protect integrity; example scenarios are available for local development only.",
