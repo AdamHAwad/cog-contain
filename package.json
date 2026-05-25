@@ -12,7 +12,7 @@
 	"scripts": {
 		"check": "pnpm run typecheck && pnpm --dir apps/web run check && pnpm run qa:public && node --experimental-strip-types scripts/validatePublicReleaseTree.ts",
 		"typecheck": "pnpm -r exec tsc --noEmit",
-		"qa:public": "pnpm --filter @cog-contain/scenario-tools run validate:examples && pnpm --filter @cog-contain/scenario-tools run validate:self-test && pnpm --filter @cog-contain/runner run qa:tui-mock-matrix && pnpm --dir apps/web run qa:public-result-summary && pnpm --dir apps/web run qa:skatebench-visualizer && pnpm --dir apps/web run qa:result-isolation && pnpm --dir apps/web run qa:front-facing-copy && pnpm --dir apps/web run qa:scenario-exposure",
+		"qa:public": "pnpm --dir apps/web run prepare-public-site && pnpm --filter @cog-contain/scenario-tools run validate:examples && pnpm --filter @cog-contain/scenario-tools run validate:self-test && pnpm --filter @cog-contain/runner run qa:tui-mock-matrix && pnpm --dir apps/web run qa:public-result-summary && pnpm --dir apps/web run qa:skatebench-visualizer && pnpm --dir apps/web run qa:result-isolation && pnpm --dir apps/web run qa:front-facing-copy && pnpm --dir apps/web run qa:scenario-exposure",
 		"build:public-site": "pnpm --dir apps/web run build:public-site",
 		"publish:results": "bash scripts/publish-official-results.sh"
 	},
