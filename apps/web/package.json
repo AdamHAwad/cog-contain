@@ -43,7 +43,8 @@
 		"vite": "^8.0.7"
 	},
 	"dependencies": {
-		"@cog-contain/core": "workspace:^"
+		"@cog-contain/core": "workspace:^",
+		"@tabler/icons-svelte": "^3.44.0"
 	},
 	"license": "MIT"
 }

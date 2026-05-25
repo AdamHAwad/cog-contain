@@ -123,37 +123,81 @@ button, summary, input { font: inherit; }
 }
 .caveats-subsection p { margin: 0; color: oklch(0.78 0.012 250); line-height: 1.75; max-width: 88ch; }
 .agent-env-subsection p { margin-bottom: 14px; }
-.agent-env-subsection { overflow: visible; }
-.agent-env-diagram { margin: 4px 0 6px; padding: 0 0 4px; overflow: visible; }
-.agent-env-diagram svg { display: block; width: 100%; max-width: 560px; height: auto; overflow: visible; }
-.agent-env-link {
-	fill: none;
-	stroke-width: 1.2;
-	opacity: 0.45;
-	stroke-dasharray: 4 5;
+.agent-env-diagram { margin: 6px 0 2px; padding: 0; }
+.agent-env-layout {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	max-width: 560px;
+}
+.agent-env-agent {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
 }
 .agent-env-agent-ring {
-	fill: oklch(0.11 0.008 250 / 0.88);
-	stroke: var(--hazard-orange);
-	stroke-width: 1.5;
-}
-.agent-env-agent-icon { color: var(--hazard-orange); }
-.agent-env-node {
-	fill: oklch(0.105 0.008 250 / 0.82);
-	stroke-width: 1.2;
-}
-.agent-env-label {
-	font: 600 9px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
-	text-transform: uppercase;
-	letter-spacing: 0.08em;
-	text-anchor: middle;
+	display: grid;
+	place-items: center;
+	width: 56px;
+	height: 56px;
+	border: 1.5px solid var(--hazard-orange);
+	border-radius: 999px;
+	background: oklch(0.11 0.008 250 / 0.88);
+	box-shadow: 0 0 0 6px oklch(0.72 0.19 45 / 0.08);
 }
 .agent-env-agent-label {
-	font: 700 9px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+	margin: 0;
+	font: 700 0.62rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
 	text-transform: uppercase;
 	letter-spacing: 0.1em;
-	fill: var(--hazard-orange);
-	text-anchor: middle;
+	color: var(--hazard-orange);
+}
+.agent-env-links {
+	display: block;
+	width: 100%;
+	height: 44px;
+	margin: 2px 0 0;
+}
+.agent-env-link {
+	fill: none;
+	stroke-width: 1.25;
+	opacity: 0.42;
+	stroke-dasharray: 4 5;
+}
+.agent-env-tools {
+	list-style: none;
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+	gap: 0 10px;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+.agent-env-tools li {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+	min-width: 0;
+}
+.agent-env-node {
+	display: grid;
+	place-items: center;
+	width: 48px;
+	height: 48px;
+	border: 1px solid color-mix(in oklch, var(--tool-tone) 32%, var(--hairline));
+	border-radius: 10px;
+	background: oklch(0.105 0.008 250 / 0.82);
+}
+.agent-env-label {
+	font: 600 0.6rem/1.35 ui-monospace, SFMono-Regular, Menlo, monospace;
+	text-transform: uppercase;
+	letter-spacing: 0.07em;
+	color: var(--tool-tone);
+	text-align: center;
+	max-width: 5.5rem;
 }
 .caveats-subsection .tone-label { color: var(--subsection-tone); }
 .caveats-metrics {
@@ -398,4 +442,8 @@ button, summary, input { font: inherit; }
 	.bar-row { grid-template-columns: 30px minmax(0, 1fr) auto; }
 	.value { font-size: .78rem; }
 	.matrix-plot { height: 300px; }
+	.agent-env-tools { gap: 0 6px; }
+	.agent-env-node { width: 42px; height: 42px; }
+	.agent-env-label { font-size: 0.55rem; letter-spacing: 0.05em; max-width: 4.75rem; }
+	.agent-env-links { height: 36px; }
 }
