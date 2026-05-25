@@ -35,7 +35,8 @@ button, summary, input { font: inherit; }
 .noise { position: fixed; inset: 0; pointer-events: none; opacity: 0.16; background-image: radial-gradient(oklch(0.9 0.01 250 / 0.09) 0.7px, transparent 0.7px); background-size: 3px 3px; mix-blend-mode: overlay; }
 .grid-backdrop { position: fixed; inset: 0; pointer-events: none; background-image: linear-gradient(to right, oklch(0.95 0.006 240 / 0.045) 1px, transparent 1px), linear-gradient(to bottom, oklch(0.95 0.006 240 / 0.045) 1px, transparent 1px); background-size: 40px 40px; mask-image: linear-gradient(180deg, black, transparent 92%); }
 
-.bench-header, .control-row, .chart-card, .summary-strip, .caveats { position: relative; z-index: 1; width: min(100%, 1220px); margin-inline: auto; }
+.bench-header, .chart-card, .summary-strip, .caveats { position: relative; z-index: 1; width: min(100%, 1220px); margin-inline: auto; }
+.control-row { position: relative; z-index: 20; width: min(100%, 1220px); margin-inline: auto; display: flex; align-items: center; justify-content: flex-end; gap: 28px; padding: 28px 12px; }
 .bench-header { display: flex; align-items: end; justify-content: space-between; gap: 32px; padding: 0 0 28px; border-bottom: 1px solid var(--hairline); }
 .brand-lockup { display: flex; align-items: center; gap: 20px; }
 .mark-wrap { width: 58px; color: var(--text); filter: drop-shadow(0 0 24px oklch(0.72 0.19 45 / 0.2)); transform: rotate(-8deg); }
@@ -46,14 +47,27 @@ button, summary, input { font: inherit; }
 .system-readout { text-align: right; color: var(--muted); font: 600 0.68rem/1.8 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: .12em; }
 .system-readout p { margin: 0; }
 
-.control-row { display: flex; align-items: center; justify-content: flex-end; gap: 28px; padding: 28px 12px; }
 .tabs { display: flex; gap: 26px; }
 .tabs button { appearance: none; border: 0; border-bottom: 2px solid transparent; background: transparent; color: oklch(0.74 0.01 250); padding: 0 0 5px; cursor: pointer; text-transform: uppercase; font-weight: 850; letter-spacing: -0.02em; }
 .tabs button.active { color: var(--tab-tone); border-color: var(--tab-tone); }
-.filter-menu { position: relative; }
-.filter-menu summary { list-style: none; cursor: pointer; border: 1px solid var(--hairline); border-radius: 6px; padding: 14px 17px; background: oklch(0.13 0.008 250 / 0.74); color: var(--text); font: 600 0.68rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: .08em; }
+.filter-menu { position: relative; isolation: isolate; }
+.filter-menu summary { list-style: none; cursor: pointer; border: 1px solid var(--hairline); border-radius: 6px; padding: 14px 17px; background: oklch(0.14 0.009 250); color: var(--text); font: 600 0.68rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: .08em; }
+.filter-menu[open] summary { background: oklch(0.16 0.01 250); border-color: oklch(0.95 0.006 240 / 0.18); }
 .filter-menu summary::-webkit-details-marker { display: none; }
-.filter-panel { position: absolute; right: 0; top: calc(100% + 10px); width: min(330px, calc(100vw - 32px)); max-height: 390px; overflow: auto; padding: 10px; border: 1px solid var(--hairline); background: oklch(0.105 0.008 250 / 0.98); box-shadow: 0 20px 70px oklch(0 0 0 / .5); z-index: 5; }
+.filter-panel {
+	position: absolute;
+	right: 0;
+	top: calc(100% + 10px);
+	width: min(330px, calc(100vw - 32px));
+	max-height: 390px;
+	overflow: auto;
+	padding: 10px;
+	border: 1px solid oklch(0.95 0.006 240 / 0.16);
+	border-radius: 8px;
+	background: oklch(0.145 0.009 250);
+	box-shadow: 0 24px 80px oklch(0 0 0 / 0.65), 0 0 0 1px oklch(0 0 0 / 0.35);
+	z-index: 30;
+}
 .filter-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
 .filter-actions button { border: 1px solid var(--hairline); background: transparent; color: var(--text); padding: 8px; cursor: pointer; text-transform: uppercase; font-size: .7rem; }
 .filter-panel label { display: flex; align-items: center; gap: 10px; padding: 9px 6px; color: oklch(0.8 0.01 250); font: 0.76rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; }
