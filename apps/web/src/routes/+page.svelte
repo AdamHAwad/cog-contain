@@ -1,5 +1,6 @@
 <script lang="ts">
 	import ContainmentMark from '$lib/skatebench/ContainmentMark.svelte';
+	import ModelDetailModal from '$lib/skatebench/ModelDetailModal.svelte';
 	import {
 		formatFullModelLabel,
 		formatModelLine,
@@ -32,6 +33,7 @@
 	let activeTabOverride = $state<TabId | undefined>(undefined);
 	const activeTab = $derived(activeTabOverride ?? (leaderboardMode ? 'leaderboard' : 'accuracy'));
 	let selectedRowsOverride = $state<string[] | undefined>(undefined);
+	let detailModalRowId = $state<string | undefined>(undefined);
 	const defaultSelectedRows = $derived(visualizerSnapshot.results.slice(0, 6).map((result) => result.rowId));
 	const selectedRows = $derived(selectedRowsOverride ?? defaultSelectedRows);
 
@@ -44,6 +46,9 @@
 	const accuracyRows = $derived([...filteredResults].sort((a, b) => supportedNumber(b.accuracyPercent) - supportedNumber(a.accuracyPercent)));
 	const costRows = $derived([...filteredResults].sort((a, b) => supportedNumber(a.totalCostUsd) - supportedNumber(b.totalCostUsd)));
 	const speedRows = $derived([...filteredResults].sort((a, b) => supportedNumber(a.averageDurationSeconds) - supportedNumber(b.averageDurationSeconds)));
+	const detailResult = $derived(
+		detailModalRowId === undefined ? undefined : visualizerSnapshot.results.find((result) => result.rowId === detailModalRowId)
+	);
 
 	/** Fixed chart axes so bar width is not normalized to the current top row. */
 	const costAxisMaxUsd = 20;
@@ -111,15 +116,12 @@
 		};
 	}
 
-	function ciLabel(result: SnapshotResult) {
-		const interval = result.confidenceInterval;
-		if (!interval || interval.status !== 'supported') return 'CI unsupported';
-		if (typeof interval.lowerBound !== 'number' || typeof interval.upperBound !== 'number') return 'CI unsupported';
-		return `95% CI ${interval.lowerBound.toFixed(1)}–${interval.upperBound.toFixed(1)}%`;
+	function openDetail(rowId: string) {
+		detailModalRowId = rowId;
 	}
 
-	function componentLabel(key: string) {
-		return key.replaceAll('_', ' ');
+	function closeDetail() {
+		detailModalRowId = undefined;
 	}
 </script>
 
@@ -187,16 +189,16 @@
 		{:else if activeTab === 'leaderboard'}
 			<div class="card-heading">
 				<h2>Leaderboard score</h2>
-				<p>Versioned scenario utility mean from the official hidden-suite quality benchmark.</p>
+				<p>Versioned scenario utility mean from the official hidden-suite quality benchmark. Click a model row for score breakdown.</p>
 			</div>
 			<div class="bar-list">
 				{#each leaderboardRows as result (result.rowId)}
-					<div class="bar-row top-row">
+					<button type="button" class="bar-row top-row clickable" onclick={() => openDetail(result.rowId)}>
 						<p class="rank" style:color={modelColor(result)}>{String(result.rank).padStart(2, '0')}</p>
 						<p class="model"><span>{inferModelLab(result.model, result.provider)}</span> {formatModelLine(displayInput(result))}</p>
 						<div class="track"><i style:width={barWidthFromPercent(result.leaderboardScorePercent)} style:background={modelColor(result)}></i></div>
 						<p class="value">{pctPrecise(result.leaderboardScorePercent)}</p>
-					</div>
+					</button>
 				{/each}
 			</div>
 		{:else if activeTab === 'accuracy'}
@@ -253,27 +255,8 @@
 		</div>
 	</section>
 
-	{#if leaderboardMode}
-		<section class="caveats" aria-label="Leaderboard score details">
-			<h2>Score details</h2>
-			{#each filteredResults as result (result.rowId)}
-				<div class="score-detail-block">
-					<h3>{formatFullModelLabel(displayInput(result))}</h3>
-					<p>
-						Completion: {typeof result.completionRate === 'number' ? `${Math.round(result.completionRate * 100)}%` : 'unsupported'}
-						· Unsupported primary checks: {result.unsupportedPrimaryScoreCount ?? 0}
-						· {ciLabel(result)}
-					</p>
-					{#if result.componentMeans}
-						<div class="legend-grid">
-							{#each Object.entries(result.componentMeans) as [key, value] (key)}
-								<p>{componentLabel(key)}: {typeof value === 'number' ? `${value.toFixed(1)}%` : 'unsupported'}</p>
-							{/each}
-						</div>
-					{/if}
-				</div>
-			{/each}
-		</section>
+	{#if detailResult}
+		<ModelDetailModal result={detailResult} displayInput={displayInput(detailResult)} onclose={closeDetail} />
 	{/if}
 
 	<section class="summary-strip" aria-label="Benchmark summary">
@@ -294,16 +277,3 @@
 		<p>All scenario content is original COG-CONTAIN fiction inspired by containment-style settings. No real SCP entries, names, item numbers, object classes, logos, or SCP-specific language are used.</p>
 	</section>
 </main>
-
-<style>
-	.score-detail-block + .score-detail-block {
-		margin-top: 1rem;
-		padding-top: 1rem;
-		border-top: 1px solid var(--muted-line);
-	}
-
-	.score-detail-block h3 {
-		font-size: 0.95rem;
-		margin: 0 0 0.35rem;
-	}
-</style>
