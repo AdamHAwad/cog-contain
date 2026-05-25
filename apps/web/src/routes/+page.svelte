@@ -1,5 +1,10 @@
 <script lang="ts">
 	import ContainmentMark from '$lib/skatebench/ContainmentMark.svelte';
+	import {
+		formatFullModelLabel,
+		formatModelLine,
+		inferModelLab
+	} from '$lib/skatebench/modelDisplay';
 	import type { PublicSiteSnapshot } from '$lib/skatebench/visualizerData';
 
 	type SnapshotResult = PublicSiteSnapshot['results'][number];
@@ -84,15 +89,14 @@
 		return typeof value === 'number' && Number.isFinite(value) && value > 0 ? `${value.toFixed(3)}s` : 'unsupported';
 	}
 
-	function providerName(value: string) {
-		if (value === 'openai') return 'OpenAI';
-		if (value === 'openrouter') return 'OpenRouter';
-		return value;
-	}
-
-	function modelName(result: Pick<SnapshotResult, 'model' | 'thinkingLevel' | 'providerThinkingEffort'>) {
-		const effort = result.providerThinkingEffort ?? result.thinkingLevel;
-		return effort ? `${result.model} ${effort}` : result.model;
+	function displayInput(result: SnapshotResult) {
+		return {
+			provider: result.provider,
+			model: result.model,
+			thinkingLevel: result.thinkingLevel,
+			providerThinkingEffort: result.providerThinkingEffort,
+			rowId: result.rowId
+		};
 	}
 
 	function ciLabel(result: SnapshotResult) {
@@ -155,7 +159,7 @@
 				{#each visualizerSnapshot.results as result (result.rowId)}
 					<label>
 						<input type="checkbox" checked={selectedRows.includes(result.rowId)} onchange={() => toggleRow(result.rowId)} />
-						<span>{providerName(result.provider)}</span>{modelName(result)}
+						<span>{inferModelLab(result.model, result.provider)}</span> {formatModelLine(displayInput(result))}
 					</label>
 				{/each}
 			</div>
@@ -177,7 +181,7 @@
 				{#each leaderboardRows as result (result.rowId)}
 					<div class="bar-row top-row">
 						<p class="rank" style:color={modelColor(result)}>{String(result.rank).padStart(2, '0')}</p>
-						<p class="model"><span>{providerName(result.provider)}</span>{modelName(result)}</p>
+						<p class="model"><span>{inferModelLab(result.model, result.provider)}</span> {formatModelLine(displayInput(result))}</p>
 						<div class="track"><i style:width={`${(supportedNumber(result.leaderboardScorePercent) / maxLeaderboard) * 100}%`} style:background={modelColor(result)}></i></div>
 						<p class="value">{pctPrecise(result.leaderboardScorePercent)}</p>
 					</div>
@@ -192,7 +196,7 @@
 				{#each accuracyRows as result (result.rowId)}
 					<div class="bar-row top-row">
 						<p class="rank" style:color={modelColor(result)}>{String(result.rank).padStart(2, '0')}</p>
-						<p class="model"><span>{providerName(result.provider)}</span>{modelName(result)}</p>
+						<p class="model"><span>{inferModelLab(result.model, result.provider)}</span> {formatModelLine(displayInput(result))}</p>
 						<div class="track"><i style:width={`${(supportedNumber(result.accuracyPercent) / maxAccuracy) * 100}%`} style:background={modelColor(result)}></i></div>
 						<p class="value">{pct(result.accuracyPercent)}</p>
 					</div>
@@ -207,7 +211,7 @@
 				{#each costRows as result (result.rowId)}
 					<div class="bar-row">
 						<p class="rank" style:color={modelColor(result)}>{String(result.rank).padStart(2, '0')}</p>
-						<p class="model"><span>{providerName(result.provider)}</span>{modelName(result)}</p>
+						<p class="model"><span>{inferModelLab(result.model, result.provider)}</span> {formatModelLine(displayInput(result))}</p>
 						<div class="track"><i style:width={`${Math.max(3, (supportedNumber(result.totalCostUsd) / maxCost) * 100)}%`} style:background={modelColor(result)}></i></div>
 						<p class="value">{money(result.totalCostUsd)}</p>
 					</div>
@@ -222,7 +226,7 @@
 				{#each speedRows as result (result.rowId)}
 					<div class="bar-row">
 						<p class="rank" style:color={modelColor(result)}>{String(result.rank).padStart(2, '0')}</p>
-						<p class="model"><span>{providerName(result.provider)}</span>{modelName(result)}</p>
+						<p class="model"><span>{inferModelLab(result.model, result.provider)}</span> {formatModelLine(displayInput(result))}</p>
 						<div class="track"><i style:width={`${Math.max(3, (supportedNumber(result.averageDurationSeconds) / maxDuration) * 100)}%`} style:background={modelColor(result)}></i></div>
 						<p class="value">{seconds(result.averageDurationSeconds)}</p>
 					</div>
@@ -232,7 +236,7 @@
 
 		<div class="legend-grid">
 			{#each filteredResults as result (result.rowId)}
-				<p><span style:color={modelColor(result)}>{result.rank}</span> {providerName(result.provider)} / {modelName(result)}</p>
+				<p><span style:color={modelColor(result)}>{result.rank}</span> {formatFullModelLabel(displayInput(result))}</p>
 			{/each}
 		</div>
 	</section>
@@ -242,7 +246,7 @@
 			<h2>Score details</h2>
 			{#each filteredResults as result (result.rowId)}
 				<div class="score-detail-block">
-					<h3>{providerName(result.provider)} / {modelName(result)}</h3>
+					<h3>{formatFullModelLabel(displayInput(result))}</h3>
 					<p>
 						Completion: {typeof result.completionRate === 'number' ? `${Math.round(result.completionRate * 100)}%` : 'unsupported'}
 						· Unsupported primary checks: {result.unsupportedPrimaryScoreCount ?? 0}
