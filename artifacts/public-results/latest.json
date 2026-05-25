@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "cog-contain-public-result-summary",
   "label": "official-leaderboard-results",
-  "createdAt": "2026-05-25T17:03:38.158Z",
+  "createdAt": "2026-05-25T17:54:59.614Z",
   "sourceMode": "official-leaderboard",
   "scoreKind": "leaderboard-score-v1",
   "runProtocol": "official-leaderboard-v1",
@@ -17,17 +17,27 @@
   "official": true,
   "leaderboardEligible": true,
   "fullLowerBoundRunExecuted": true,
-  "artifactRoot": "private-official-artifacts/anthropic-claude-opus-4.7-max-tier-xhigh",
+  "artifactRoot": "private-official-artifacts/google-gemini-3.5-flash-high",
   "artifactRoots": [
+    "private-official-artifacts/google-gemini-3.5-flash-high",
     "private-official-artifacts/anthropic-claude-opus-4.7-max-tier-xhigh",
     "private-official-artifacts/gpt-5.5-xhigh"
   ],
   "sourceSummaryPath": "artifacts/public-results/latest.json",
   "sourceSummaries": [
+    "private-official-artifacts/google-gemini-3.5-flash-high/summary.json",
     "private-official-artifacts/anthropic-claude-opus-4.7-max-tier-xhigh/summary.json",
     "private-official-artifacts/gpt-5.5-xhigh/summary.json"
   ],
   "providerProfiles": [
+    {
+      "provider": "openrouter",
+      "model": "google/gemini-3.5-flash",
+      "label": "openrouter:google/gemini-3.5-flash",
+      "rowId": "official-leaderboard-openrouter-google-gemini-3.5-flash-google-gemini-3.5-flash-high",
+      "thinkingLevel": "high",
+      "providerThinkingEffort": "high"
+    },
     {
       "provider": "openrouter",
       "model": "anthropic/claude-opus-4.7",
@@ -52,12 +62,12 @@
     "retryCount": 0
   },
   "scenarioCount": 40,
-  "runCount": 80,
-  "completedCount": 80,
+  "runCount": 120,
+  "completedCount": 120,
   "errorCount": 0,
   "scoreStatusCounts": {
-    "leaderboard_primary_unsupported": 32,
-    "leaderboard_primary_supported": 48
+    "leaderboard_primary_unsupported": 44,
+    "leaderboard_primary_supported": 76
   },
   "variantCounts": {
     "attacked": 30,
@@ -65,11 +75,94 @@
   },
   "modelResults": [
     {
+      "rowId": "official-leaderboard-openrouter-google-gemini-3.5-flash-google-gemini-3.5-flash-high",
+      "runLabel": "google/gemini-3.5-flash",
+      "resultLabel": "official-leaderboard-hidden-google-gemini-3.5-flash-high",
+      "thinkingLevel": "high",
+      "rank": 1,
+      "provider": "openrouter",
+      "model": "google/gemini-3.5-flash",
+      "status": "official_leaderboard",
+      "runs": 40,
+      "completedRuns": 40,
+      "errorRuns": 0,
+      "scoreKind": "leaderboard-score-v1",
+      "runProtocol": "official-leaderboard-v1",
+      "scoreVersion": "1.0.0",
+      "leaderboardScorePercent": 47.40436507936507,
+      "leaderboardEligible": true,
+      "eligibilityReasons": [],
+      "completionRate": 1,
+      "failedAttemptCount": 0,
+      "unsupportedPrimaryScoreCount": 12,
+      "componentMeans": {
+        "objective_completion": 21.98979591836735,
+        "harm_avoidance": 96.9047619047619,
+        "tool_safety": 100,
+        "evidence_discipline": 100,
+        "efficiency": 100,
+        "final_report_quality": 90.87301587301587
+      },
+      "confidenceInterval": {
+        "status": "supported",
+        "method": "exhaustive_bootstrap_mean",
+        "confidenceLevel": 0.95,
+        "sampleCount": 40,
+        "pointEstimate": 47.40436507936507,
+        "lowerBound": 37.28169642857142,
+        "upperBound": 56.72078373015872,
+        "resampleCount": 2000
+      },
+      "hardCapSummary": {
+        "triggeredCapCounts": [
+          {
+            "capId": "critical_attacker_goal_satisfied",
+            "count": 1,
+            "rate": 0.025
+          }
+        ],
+        "bindingCapCounts": []
+      },
+      "accuracyPercent": null,
+      "accuracySupportCount": 0,
+      "accuracySampleCount": 40,
+      "objectiveCompletionAverage": 21.98979591836735,
+      "attackResistanceAverage": null,
+      "robustUtility": 47,
+      "attackResistance": 0,
+      "objectiveCompletion": 22,
+      "overRefusal": 0,
+      "averageDurationSeconds": 25.51,
+      "minDurationSeconds": 14.466,
+      "maxDurationSeconds": 39.316,
+      "totalCostUsd": 2.2955489999999994,
+      "usageSummary": {
+        "inputTokens": 776280,
+        "outputTokens": 125681,
+        "cacheReadTokens": 0,
+        "cacheWriteTokens": 0,
+        "totalTokens": 901961,
+        "costUsd": 2.2955489999999994
+      },
+      "metricSupport": {
+        "accuracy": "unsupported",
+        "cost": "supported",
+        "speed": "supported"
+      },
+      "scoreStatusSummary": {
+        "leaderboard_primary_unsupported": 12,
+        "leaderboard_primary_supported": 28
+      },
+      "sourceArtifactRoot": "private-official-artifacts/google-gemini-3.5-flash-high",
+      "sourceSummary": "private-official-artifacts/google-gemini-3.5-flash-high/summary.json",
+      "providerThinkingEffort": "high"
+    },
+    {
       "rowId": "official-leaderboard-openrouter-anthropic-claude-opus-4.7-anthropic-claude-opus-4.7-max-tier-xhigh",
       "runLabel": "anthropic/claude-opus-4.7",
       "resultLabel": "official-leaderboard-hidden-anthropic-claude-opus-4.7-max-tier-xhigh",
       "thinkingLevel": "xhigh",
-      "rank": 1,
+      "rank": 2,
       "provider": "openrouter",
       "model": "anthropic/claude-opus-4.7",
       "status": "official_leaderboard",
@@ -152,7 +245,7 @@
       "runLabel": "gpt-5.5",
       "resultLabel": "official-leaderboard-hidden-gpt-5.5-xhigh",
       "thinkingLevel": "xhigh",
-      "rank": 2,
+      "rank": 3,
       "provider": "openai",
       "model": "gpt-5.5",
       "status": "official_leaderboard",
@@ -237,6 +330,12 @@
     "Primary score uses versioned scenario utility (leaderboard-score-v1), not live-smoke accuracy.",
     "Public rows expose metricSupport gating for accuracy, cost, and speed; accuracy remains unsupported for leaderboard-score-v1 rows.",
     "Some attempts still report unsupported primary scoring internally; scores shown are quality-benchmark aggregates pending full four-model refresh.",
+    "Benchmark scenarios are hidden to protect integrity; example scenarios are available for local development only.",
+    "All scenario content is original COG-CONTAIN fiction inspired by containment-style settings, not real SCP entries.",
+    "Added Google Gemini 3.5 Flash (OpenRouter, high reasoning) official hidden-suite quality-benchmark row.",
+    "Gemini 3.5 Flash uses high reasoning effort (max supported for this model on OpenRouter; not xhigh).",
+    "Primary score uses versioned scenario utility (leaderboard-score-v1), not live-smoke accuracy.",
+    "Public rows expose metricSupport gating for accuracy, cost, and speed; accuracy remains unsupported for leaderboard-score-v1 rows.",
     "Benchmark scenarios are hidden to protect integrity; example scenarios are available for local development only.",
     "All scenario content is original COG-CONTAIN fiction inspired by containment-style settings, not real SCP entries."
   ]
