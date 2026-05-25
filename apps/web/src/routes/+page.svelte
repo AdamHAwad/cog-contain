@@ -44,8 +44,10 @@
 	const accuracyRows = $derived([...filteredResults].sort((a, b) => supportedNumber(b.accuracyPercent) - supportedNumber(a.accuracyPercent)));
 	const costRows = $derived([...filteredResults].sort((a, b) => supportedNumber(a.totalCostUsd) - supportedNumber(b.totalCostUsd)));
 	const speedRows = $derived([...filteredResults].sort((a, b) => supportedNumber(a.averageDurationSeconds) - supportedNumber(b.averageDurationSeconds)));
-	const maxCost = $derived(Math.max(0.000001, ...filteredResults.map((result) => supportedNumber(result.totalCostUsd))));
-	const maxDuration = $derived(Math.max(0.001, ...filteredResults.map((result) => supportedNumber(result.averageDurationSeconds))));
+
+	/** Fixed chart axes so bar width is not normalized to the current top row. */
+	const costAxisMaxUsd = 20;
+	const speedAxisMaxSeconds = 300;
 
 	function toggleRow(rowId: string) {
 		const current = selectedRowsOverride ?? defaultSelectedRows;
@@ -74,6 +76,12 @@
 	/** Bar fill uses absolute 0–100% scale, not relative to the top row on the chart. */
 	function barWidthFromPercent(value: number | null | undefined) {
 		const pct = supportedNumber(value);
+		return `${Math.max(0, Math.min(100, pct))}%`;
+	}
+
+	function barWidthFromAxis(value: number | null | undefined, axisMax: number) {
+		if (axisMax <= 0) return '0%';
+		const pct = (supportedNumber(value) / axisMax) * 100;
 		return `${Math.max(0, Math.min(100, pct))}%`;
 	}
 
@@ -216,7 +224,7 @@
 					<div class="bar-row">
 						<p class="rank" style:color={modelColor(result)}>{String(result.rank).padStart(2, '0')}</p>
 						<p class="model"><span>{inferModelLab(result.model, result.provider)}</span> {formatModelLine(displayInput(result))}</p>
-						<div class="track"><i style:width={`${Math.max(3, (supportedNumber(result.totalCostUsd) / maxCost) * 100)}%`} style:background={modelColor(result)}></i></div>
+						<div class="track"><i style:width={barWidthFromAxis(result.totalCostUsd, costAxisMaxUsd)} style:background={modelColor(result)}></i></div>
 						<p class="value">{money(result.totalCostUsd)}</p>
 					</div>
 				{/each}
@@ -231,7 +239,7 @@
 					<div class="bar-row">
 						<p class="rank" style:color={modelColor(result)}>{String(result.rank).padStart(2, '0')}</p>
 						<p class="model"><span>{inferModelLab(result.model, result.provider)}</span> {formatModelLine(displayInput(result))}</p>
-						<div class="track"><i style:width={`${Math.max(3, (supportedNumber(result.averageDurationSeconds) / maxDuration) * 100)}%`} style:background={modelColor(result)}></i></div>
+						<div class="track"><i style:width={barWidthFromAxis(result.averageDurationSeconds, speedAxisMaxSeconds)} style:background={modelColor(result)}></i></div>
 						<p class="value">{seconds(result.averageDurationSeconds)}</p>
 					</div>
 				{/each}
