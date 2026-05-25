@@ -15,26 +15,35 @@ if (JSON.stringify(actual) !== JSON.stringify(expected)) {
 	throw new Error('siteResultSnapshot.ts is stale; rerun pnpm --dir apps/web run prepare-public-site');
 }
 
-const requiredModels = [
+const twoRowRequiredModels = [
 	{ provider: 'openai', model: 'gpt-5.5' },
 	{ provider: 'openrouter', model: 'anthropic/claude-opus-4.7' }
-];
+] as const;
+
+const fourRowRequiredModels = [
+	...twoRowRequiredModels,
+	{ provider: 'openai', model: 'gpt-5.4-mini' },
+	{ provider: 'openai', model: 'gpt-5.4-nano' }
+] as const;
+
+const requiredModels =
+	actual.results.length >= fourRowRequiredModels.length ? fourRowRequiredModels : twoRowRequiredModels;
 
 for (const required of requiredModels) {
 	const row = actual.results.find((result) => result.provider === required.provider && result.model === required.model);
 	if (row === undefined) {
 		throw new Error(`site snapshot missing required model row ${required.provider}:${required.model}`);
 	}
+	if (row.thinkingLevel !== 'xhigh' || row.providerThinkingEffort !== 'xhigh') {
+		throw new Error(`${required.provider}:${required.model} must expose xhigh thinking metadata in site snapshot`);
+	}
 }
 
-const gpt = actual.results.find((result) => result.provider === 'openai' && result.model === 'gpt-5.5');
-if (gpt?.thinkingLevel !== 'xhigh' || gpt?.providerThinkingEffort !== 'xhigh') {
-	throw new Error('GPT 5.5 row must expose xhigh thinking metadata in site snapshot');
-}
-
-const opus = actual.results.find((result) => result.provider === 'openrouter' && result.model === 'anthropic/claude-opus-4.7');
-if (opus?.thinkingLevel !== 'xhigh' || opus?.providerThinkingEffort !== 'xhigh') {
-	throw new Error('Opus 4.7 row must expose max-tier xhigh thinking metadata in site snapshot');
+const gemini = actual.results.find(
+	(result) => result.provider === 'openrouter' && result.model === 'google/gemini-3.5-flash'
+);
+if (gemini !== undefined && (gemini.thinkingLevel !== 'high' || gemini.providerThinkingEffort !== 'high')) {
+	throw new Error('Gemini 3.5 Flash row must expose high thinking metadata in site snapshot');
 }
 
 console.log('site result snapshot validator: ok snapshotSynced=true requiredModelsPresent=true');
