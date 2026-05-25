@@ -61,11 +61,12 @@
 	}
 
 	function isEligible(result: SnapshotResult): boolean {
+		const score = scoreForRow(result);
 		return (
-			result.metricSupport.cost === 'supported' &&
 			typeof result.totalCostUsd === 'number' &&
+			Number.isFinite(result.totalCostUsd) &&
 			result.totalCostUsd > 0 &&
-			scoreForRow(result) !== null
+			score !== null
 		);
 	}
 
